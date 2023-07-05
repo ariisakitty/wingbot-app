@@ -1,0 +1,80 @@
+<div class="row" style="height: 200px;">
+    <div class="col">
+        <div class="alert-window" id="robot-alert-window">
+            <div class="alert-window-top">
+                <p class="alert-window-top-content">Robot Readiness</p>
+            </div>
+            <div class="alert-window-main">
+                <p id="robot-readiness" class="alert-window-main-content">
+                    <!-- Display the robot readiness variable -->
+                    {{ robot_readiness['status'] }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="alert-window" id="gate-alert-window">
+            <div class="alert-window-top">
+                <p class="alert-window-top-content">Gate Readiness</p>
+            </div>
+            <div class="alert-window-main">
+                <p id="gate-readiness" class="alert-window-main-content">
+                    <!-- Display the gate readiness variable, only "gate" value -->
+                    {{ gate_readiness['gate'] }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateRobotReadiness() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/get_robot_readiness", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var robotReadiness = JSON.parse(xhr.responseText);
+                var alertWindow = document.getElementById("robot-alert-window");
+                alertWindow.classList.remove("pos", "neg");
+                var alertWindowMainContent = document.getElementById("robot-readiness");
+                if (robotReadiness["status"] === "Ready") {
+                    alertWindow.classList.add("pos");
+                    alertWindowMainContent.style.fontSize = "2.5em";
+                } else if (robotReadiness["status"] === "Unavailable") {
+                    alertWindow.classList.add("neg");
+                    alertWindowMainContent.style.fontSize = "1.8em";
+                }
+                alertWindowMainContent.textContent = robotReadiness["status"];
+            }
+        };
+        xhr.send();
+    }
+
+    function updateGateReadiness() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/get_gate_readiness", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var gateReadiness = JSON.parse(xhr.responseText);
+                // console.log(gateReadiness)
+
+                var alertWindow = document.getElementById("gate-alert-window");
+                alertWindow.classList.remove("pos", "neg");
+                var alertWindowMainContent = document.getElementById("gate-readiness");
+                if (gateReadiness["FOD"] === false) {
+                    alertWindow.classList.add("pos");
+                } else {
+                    alertWindow.classList.add("neg");
+                }
+                alertWindowMainContent.textContent = gateReadiness["gate"];
+            }
+        };
+        xhr.send();
+    }
+
+    // Update robot readiness every second
+    setInterval(updateRobotReadiness, 1000);
+
+    // Update gate readiness every second
+    setInterval(updateGateReadiness, 1000);
+</script>

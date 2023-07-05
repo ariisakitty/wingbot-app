@@ -1,0 +1,85 @@
+<div id="map" style="height: 600px; width: 600px; margin: 0 auto;"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_GVo0ltPN6bJkDwhtcPJxxEwI97q9cDU&callback=initMap" async defer></script>
+<script>
+    function initMap() {
+      const init_coord = { lat: 39.04956841839964, lng: -84.65448604035775 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: init_coord,
+        zoom: 19,
+        mapTypeId: 'satellite', // Set the default map type to 'satellite'
+      });
+  
+      // Customize the robot marker
+      const robotMarker = new google.maps.Marker({
+        position: { lat: 0, lng: 0 },
+        map: map,
+        title: "Robot Marker",
+        icon: {
+          url: "/static/green_marker2.png",
+          scaledSize: new google.maps.Size(40, 50), // Adjust the size here
+        },
+      });
+  
+    //   // Create an empty array to store FOD markers
+      const fodMarkers = [];
+  
+      // Function to update the robot position
+      function updateRobotPosition() {
+        fetch('/get_robot_readiness')
+          .then(response => response.json())
+          .then(data => {
+            const robotPosition = { lat: data.location.lat, lng: data.location.lng };
+            robotMarker.setPosition(robotPosition);
+          });
+      }
+  
+      // Function to update the FOD positions
+      function updateFODPositions() {
+        fetch('/get_gate_readiness')
+          .then(response => response.json())
+          .then(data => {
+            // Remove existing FOD markers from the map
+            fodMarkers.forEach(marker => marker.setMap(null));
+            fodMarkers.length = 0;
+  
+            // Loop through each FOD location and create a marker for it
+            if (Array.isArray(data.FOD_location)) {
+              data.FOD_location.forEach(fod => {
+                if (fod.lat !== null && fod.lng !== null) {
+                  const fodPosition = { lat: fod.lat, lng: fod.lng };
+                  const fodMarker = new google.maps.Marker({
+                    position: fodPosition,
+                    map: map,
+                    title: "FOD Marker",
+                    icon: {
+                      url: "/static/fod_marker5.png",
+                      scaledSize: new google.maps.Size(40, 40), // Adjust the size here
+                    },
+                  });
+                  fodMarkers.push(fodMarker);
+                }
+              });
+            }
+          });
+      }
+  
+      // Call the updateRobotPosition function every second
+      setInterval(updateRobotPosition, 1000);
+      // Call the updateFODPositions function every second
+      setInterval(updateFODPositions, 1000);
+    }
+  
+    // // Load the Google Maps API asynchronously
+    // function loadGoogleMaps() {
+    //   const script = document.createElement('script');
+    //   script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap';
+    //   script.defer = true;
+    //   script.async = true;
+    //   document.head.appendChild(script);
+    // }
+  
+    // // Call the function to load Google Maps
+    // loadGoogleMaps();
+</script>
+  

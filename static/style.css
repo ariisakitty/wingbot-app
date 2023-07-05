@@ -1,0 +1,127 @@
+.gate-menu {
+    color: black;
+    background-color: white;
+    width: 140px;
+    font-weight: bold;
+}
+
+.alert-window {
+    /* rounded green border */
+    border: 2px solid rgb(44, 44, 44);
+    border-radius: 25px;
+    
+    width: 100%;
+    height: 100%;
+    background-color: rgba(80, 80, 80, 0.5);
+
+    padding: 10px;
+    margin-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.alert-window.pos {
+    /* rounded green border */
+    border: 2px solid #074207;
+    background-color: rgba(152, 247, 108, 0.5);
+}
+
+.alert-window.neg {
+    /* rounded green border */
+    border: 2px solid #9e1515;
+    background-color: rgba(253, 49, 49, 0.5);
+}
+
+.alert-window-top {
+    width: 100%;
+    height: 30%;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.alert-window-top-content {
+    font-size: 0.9em;
+    padding-left: 10px;
+}
+
+.alert-window-main {
+    width: 100%;
+    height: 70%;
+
+    padding-bottom: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-window-main-content {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.summon-button {
+    height: 38px;
+    width: 111px;
+    cursor: pointer;
+    border: solid;
+    border-color: coral;
+    border-radius: 6px;
+    border-width: 2px;
+    background-color: white;
+    color: coral;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.25);
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+                
+}
+
+.summon-button:hover {
+    background-color: coral;
+    color: white;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.summon-button:active {
+    opacity: 1.0;
+}
+
+.ww-buttons {
+    height: 38px;
+    width: 111px;
+    cursor: pointer;
+    border: solid;
+    border-color: coral;
+    border-radius: 6px;
+    border-width: 2px;
+    background-color: white;
+    color: coral;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.25);
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.ww-buttons:hover {
+    background-color: coral;
+    color: white;
+    font-weight: bold;
+    opacity: 0.7;
+    
+}
+
+.ww-buttons:active {
+    opacity: 1.0;
+}
+
+.ww-buttons.pressed {
+    background-color: coral;
+    color: white;
+    font-weight: bold;
+}
+
+

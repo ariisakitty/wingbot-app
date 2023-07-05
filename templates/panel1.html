@@ -1,0 +1,60 @@
+<div class="row align-items-center" style="height: 50px;">
+    <div class="col-4 ms-2 me-3 px-0">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle gate-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Choose Gate
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="selectMessage('A14', this)">A14</a></li>
+                <li><a class="dropdown-item" href="#" onclick="selectMessage('A16', this)">A16</a></li>
+                <li><a class="dropdown-item" href="#" onclick="selectMessage('A18', this)">A18</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="row align-items-center justify-content-start">
+            <div class="col-5 px-2">
+                <button class="summon-button" onclick="sendMessageToServer()">
+                    Summon
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var selectedMessage = ""; // Variable to store the selected message
+
+    function selectMessage(message, element) {
+        selectedMessage = message;
+        var dropdownButton = document.querySelector('.dropdown-toggle');
+        dropdownButton.innerText = message;
+    }
+
+    function sendMessageToServer() {
+        if (selectedMessage === "") {
+            alert("Please select a message from the dropdown menu.");
+            return;
+        }
+
+        var serverURL = "http://127.0.0.1:5001"; // Replace with the URL of your Flask app
+
+        // Create a JSON object with the selected message
+        var messageObject = {
+            "message": selectedMessage
+        };
+
+        // Convert the JSON object to a string
+        var jsonMessage = JSON.stringify(messageObject);
+
+        // Create an XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Set up the HTTP POST request
+        xhr.open("POST", serverURL, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Send the JSON message as the request body
+        xhr.send(jsonMessage);
+    }
+</script>
