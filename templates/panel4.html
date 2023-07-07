@@ -1,22 +1,73 @@
 <div class="row" style="height: 200px;">
     <div class="col">
-        <div class="alert-window">
+        <div class="alert-window" id="left-alert-window">
             <div class="alert-window-top">
                 <p class="alert-window-top-content">Left Side</p>
             </div>
             <div class="alert-window-main">
-                <p class="alert-window-main-content">Clear</p>
+                <p id="left-status" class="alert-window-main-content">
+                    <!-- {{ wingwalking['left'] }} -->
+                </p>
             </div>
         </div>
     </div>
     <div class="col">
-        <div class="alert-window">
+        <div class="alert-window" id="right-alert-window">
             <div class="alert-window-top">
                 <p class="alert-window-top-content">Right Side</p>
             </div>
             <div class="alert-window-main">
-                <p class="alert-window-main-content">Clear</p>
+                <p id="right-status" class="alert-window-main-content">
+                    <!-- {{ wingwalking['right'] }} -->
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function updateWingwalkingStatus() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/get_wingwalking_status", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var wingwalking = JSON.parse(xhr.responseText);
+                // console.log(wingwalking);
+
+                var alertWindowLeft = document.getElementById("left-alert-window");
+                var alertWindowRight = document.getElementById("right-alert-window");
+
+                alertWindowLeft.classList.remove("pos", "neg");
+                alertWindowRight.classList.remove("pos", "neg");
+
+                var alertWindowMainContentLeft = document.getElementById("left-status");
+                var alertWindowMainContentRight = document.getElementById("right-status");
+
+                if (wingwalking["is_activated"] === false) {
+                    alertWindowMainContentLeft.textContent = "";
+                    alertWindowMainContentRight.textContent = "";
+                } else {
+                    if (wingwalking["left"] === true) {
+                        alertWindowLeft.classList.add("neg");
+                        alertWindowMainContentLeft.textContent = "Warning";
+                    } else {
+                        alertWindowLeft.classList.add("pos");
+                        alertWindowMainContentLeft.textContent = "Cleared";
+                    }
+
+                    if (wingwalking["right"] === true) {
+                        alertWindowRight.classList.add("neg");
+                        alertWindowMainContentRight.textContent = "Warning";
+                    } else {
+                        alertWindowRight.classList.add("pos");
+                        alertWindowMainContentRight.textContent = "Cleared";
+                    }
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    setInterval(updateWingwalkingStatus, 1000);
+
+</script>

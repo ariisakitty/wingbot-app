@@ -18,6 +18,11 @@
                     Summon
                 </button>
             </div>
+            <div class="col-5 px-2">
+                <button class="estop-button" onclick="sendMessageToServer()">
+                    E-STOP
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -56,5 +61,9 @@
 
         // Send the JSON message as the request body
         xhr.send(jsonMessage);
+    }
+
+    function toggleEstopButton() {
+        
     }
 </script>

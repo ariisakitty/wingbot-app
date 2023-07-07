@@ -91,6 +91,31 @@
     opacity: 1.0;
 }
 
+.estop-button {
+    height: 38px;
+    width: 111px;
+    cursor: pointer;
+    border: solid;
+    border-color: rgb(255, 0, 0);
+    border-radius: 6px;
+    border-width: 2px;
+    background-color: rgb(255, 0, 0);
+    color: white;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.25);
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+                
+}
+
+.estop-button:hover {
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.estop-button:active {
+    opacity: 1.0;
+}
+
 .ww-buttons {
     height: 38px;
     width: 111px;

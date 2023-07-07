@@ -56,17 +56,25 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var gateReadiness = JSON.parse(xhr.responseText);
-                // console.log(gateReadiness)
+                // console.log(gateReadiness);
 
                 var alertWindow = document.getElementById("gate-alert-window");
                 alertWindow.classList.remove("pos", "neg");
                 var alertWindowMainContent = document.getElementById("gate-readiness");
-                if (gateReadiness["FOD"] === false) {
-                    alertWindow.classList.add("pos");
+
+                if (gateReadiness["gate"] === null) {
+                    // Set the content of alertWindowMainContent to an empty string
+                    alertWindowMainContent.textContent = "";
+                    // alertWindow.style.display = "none";
                 } else {
-                    alertWindow.classList.add("neg");
+                    if (gateReadiness["FOD"] === false) {
+                        alertWindow.classList.add("pos");
+                    } else {
+                        alertWindow.classList.add("neg");
+                    }
+                    alertWindowMainContent.textContent = gateReadiness["gate"];
+                    alertWindow.style.display = "block";
                 }
-                alertWindowMainContent.textContent = gateReadiness["gate"];
             }
         };
         xhr.send();

@@ -21,16 +21,21 @@
         },
       });
   
-    //   // Create an empty array to store FOD markers
+      // Create an empty array to store FOD markers
       const fodMarkers = [];
+
+      // Create an empty array to store WW markers
+      const wwMarkers = [];
   
       // Function to update the robot position
       function updateRobotPosition() {
         fetch('/get_robot_readiness')
           .then(response => response.json())
           .then(data => {
-            const robotPosition = { lat: data.location.lat, lng: data.location.lng };
-            robotMarker.setPosition(robotPosition);
+            if (data.location.lat !== null && data.location.lng !== null) {
+              const robotPosition = { lat: data.location.lat, lng: data.location.lng };
+              robotMarker.setPosition(robotPosition);
+            }
           });
       }
   
@@ -63,11 +68,60 @@
             }
           });
       }
+
+      // Function to update the wingwalking positions
+      function updateWingwalkingPositions() {
+        fetch('/get_wingwalking_status')
+          .then(response => response.json())
+          .then(data => {
+            // Remove existing WW markers from the map
+            wwMarkers.forEach(marker => marker.setMap(null));
+            wwMarkers.length = 0;
+  
+            // Loop through each WW location and create a marker for it
+            if (Array.isArray(data.left_location)) {
+              data.left_location.forEach(ww => {
+                if (ww.lat !== null && ww.lng !== null) {
+                  const wwPosition = { lat: ww.lat, lng: ww.lng };
+                  const wwMarker = new google.maps.Marker({
+                    position: wwPosition,
+                    map: map,
+                    title: "WW Marker",
+                    icon: {
+                      url: "/static/black_marker5.png",
+                      scaledSize: new google.maps.Size(35, 35), // Adjust the size here
+                    },
+                  });
+                  wwMarkers.push(wwMarker);
+                }
+              });
+            }
+            if (Array.isArray(data.left_location)) {
+              data.right_location.forEach(ww => {
+                if (ww.lat !== null && ww.lng !== null) {
+                  const wwPosition = { lat: ww.lat, lng: ww.lng };
+                  const wwMarker = new google.maps.Marker({
+                    position: wwPosition,
+                    map: map,
+                    title: "WW Marker",
+                    icon: {
+                      url: "/static/black_marker5.png",
+                      scaledSize: new google.maps.Size(35, 35), // Adjust the size here
+                    },
+                  });
+                  wwMarkers.push(wwMarker);
+                }
+              });
+            }
+          });
+      }
   
       // Call the updateRobotPosition function every second
       setInterval(updateRobotPosition, 1000);
       // Call the updateFODPositions function every second
       setInterval(updateFODPositions, 1000);
+      // Call the updateWingwalkingPositions function every second
+      setInterval(updateWingwalkingPositions, 1000);
     }
   
     // // Load the Google Maps API asynchronously
