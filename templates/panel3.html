@@ -21,8 +21,6 @@
 <script>
     let activateIntervalId; // Variable to store the interval ID for activate button
     let engageIntervalId; // Variable to store the interval ID for engage button
-    let isActivated = false; // Flag to track activation status
-    let isEngaged = false; // Flag to track engagement status
 
     function toggleActivateButton(button, key) {
         button.classList.toggle("pressed");
@@ -33,7 +31,7 @@
                 // Stop sending messages
                 clearInterval(activateIntervalId);
                 // Send "deactivate" message for 3 times
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 1; i++) {
                     setTimeout(() => sendMessage(key, true), i * 2000);
                 }
             } else if (key === 'engage') {
@@ -41,7 +39,7 @@
                 // Stop sending messages
                 clearInterval(activateIntervalId);
                 // Send "deactivate" message for 3 times
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 1; i++) {
                     setTimeout(() => sendMessage(key, true), i * 2000);
                 }
             }
@@ -51,7 +49,7 @@
                 // Stop sending messages
                 clearInterval(activateIntervalId);
                 // Send "deactivate" message for 3 times
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 1; i++) {
                     setTimeout(() => sendMessage(key, false), i * 2000);
                 }
             } else if (key === 'engage') {
@@ -59,7 +57,7 @@
                 // Stop sending messages
                 clearInterval(engageIntervalId);
                 // Send "disengage" message for 3 times
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 1; i++) {
                     setTimeout(() => sendMessage(key, false), i * 2000);
                 }
             }
@@ -80,86 +78,11 @@
         var xhr = new XMLHttpRequest();
 
         // Set up the HTTP POST request
-        xhr.open("POST", serverURL, true);
+        xhr.open("POST", serverURL + "/" + key, true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         // Send the JSON message as the request body
         xhr.send(jsonMessage);
     }
     
-    // Start sending "false" message every 2 seconds
-    // setInterval(() => sendMessage('activate', false), 2000);
-    // setInterval(() => sendMessage('engage', false), 2000);
 </script>
-
-
-<!-- <div class="row align-items-center" style="height: 50px; margin-top: 50px;">
-    <div class="col-4 ms-4 px-0 d-flex align-items-center">
-        <p class="text-start fs-6 fw-bold" style="margin: 0;">Wingwalking Mode</p>
-    </div>
-    <div class="col">
-        <div class="row align-items-center justify-content-start">
-            <div class="col-5 px-2">
-                <button class="ww-buttons" onclick="toggleActivateButton(this, 'activate')">
-                    Activate
-                </button>
-            </div>
-            <div class="col-5 px-2">
-                <button class="ww-buttons" onclick="toggleActivateButton(this, 'engage')">
-                    Engage
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    let intervalId; // Variable to store the interval ID
-
-    function toggleActivateButton(button, key) {
-        button.classList.toggle("pressed");
-        
-        if (button.classList.contains("pressed")) {
-            if (button.innerText === "Activate") {
-                button.innerText = "Activated";
-            } else if (button.innerText === "Engage") {
-                button.innerText = "Engaged";
-            }
-            // Start sending messages every 2 seconds
-            intervalId = setInterval(() => sendMessage(key, true), 2000);
-        } else {
-            if (button.innerText === "Activated") {
-                button.innerText = "Activate";
-            } else if (button.innerText === "Engaged") {
-                button.innerText = "Engage";
-            }
-            // Stop sending messages
-            clearInterval(intervalId);
-        }
-    }
-
-    function sendMessage(key, value) {
-        var serverURL = "http://127.0.0.1:5001"; // Replace with the URL of your Flask app
-
-        // Create a JSON object with the message
-        var messageObject = {};
-        messageObject[key] = value;
-
-        // Convert the JSON object to a string
-        var jsonMessage = JSON.stringify(messageObject);
-
-        // Create an XMLHttpRequest object
-        var xhr = new XMLHttpRequest();
-
-        // Set up the HTTP POST request
-        xhr.open("POST", serverURL, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        // Send the JSON message as the request body
-        xhr.send(jsonMessage);
-    }
-    
-    // Start sending "false" message every 2 seconds
-    intervalId = setInterval(() => sendMessage('activate', false), 2000);
-    intervalId = setInterval(() => sendMessage('engage', false), 2000);
-</script> -->

@@ -23,7 +23,8 @@ r2s_msg = {
 s2r_msg = {
     "gate": None,
     "activate": False,
-    "engage": False
+    "engage": False,
+    "estop": False
 }
 
 robot_readiness = {
@@ -90,12 +91,12 @@ def toggle_r2s():
         r2s_msg = tools.r2s_msg_11
         counter = 0
 
-    print(f"[{counter}] / r2s_msg: {r2s_msg}")
+    # print(f"[{counter}] / r2s_msg: {r2s_msg}")
     
     robot_readiness, gate_readiness, wingwalking = msg_processing.input_proc(r2s_msg)
-    print(f"robot_readiness: {robot_readiness}")
-    print(f"gate_readiness: {gate_readiness}")
-    print(f"wingwalking: {wingwalking}")
+    # print(f"robot_readiness: {robot_readiness}")
+    # print(f"gate_readiness: {gate_readiness}")
+    # print(f"wingwalking: {wingwalking}")
     
     threading.Timer(5, toggle_r2s).start()
 toggle_r2s()
@@ -116,16 +117,53 @@ def get_gate_readiness():
 def get_wingwalking_readiness():
     return wingwalking
 
-# @app.route('/', methods=['POST'])
-# def handle_message():
-#     global robot_readiness
-#     data = request.get_json()
-#     # message = data['message']
-#     if 'activate' in data:
-#         print('Received activate message:', data['activate'])
-#     elif 'engage' in data:
-#         print('Received engage message:', data['engage'])
-#     return 'Message received'
+# Route to handle the "activate" message
+@app.route('/activate', methods=['POST'])
+def handle_activate_message():
+    global s2r_msg
+    data = request.get_json()
+    activate = data['activate']
+    s2r_msg['activate'] = activate
+
+    print(f"s2r_msg: {s2r_msg}")
+
+    return 'Activate message received'
+
+# Route to handle the "engage" message
+@app.route('/engage', methods=['POST'])
+def handle_engage_message():
+    global s2r_msg
+    data = request.get_json()
+    engage = data['engage']
+    s2r_msg['engage'] = engage
+
+    print(f"s2r_msg: {s2r_msg}")
+
+    return 'Engage message received'
+
+# Route to handle the "gate" message
+@app.route('/gate', methods=['POST'])
+def handle_gate_message():
+    global s2r_msg
+    data = request.get_json()
+    gate = data['gate']
+    s2r_msg['gate'] = gate
+
+    print(f"s2r_msg: {s2r_msg}")
+
+    return 'Gate message received'
+
+# Route to handle the "engage" message
+@app.route('/estop', methods=['POST'])
+def handle_estop_message():
+    global s2r_msg
+    data = request.get_json()
+    estop = data['estop']
+    s2r_msg['estop'] = estop
+
+    print(f"s2r_msg: {s2r_msg}")
+
+    return 'Estop message received'
 
 if __name__ == '__main__':
     app.run(port=5001)

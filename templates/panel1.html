@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="col-5 px-2">
-                <button class="estop-button" onclick="sendMessageToServer()">
+                <button class="estop-button" onclick="toggleEstopButton(this, 'estop')">
                     E-STOP
                 </button>
             </div>
@@ -29,6 +29,7 @@
 
 <script>
     var selectedMessage = ""; // Variable to store the selected message
+    let intervalId;
 
     function selectMessage(message, element) {
         selectedMessage = message;
@@ -46,7 +47,7 @@
 
         // Create a JSON object with the selected message
         var messageObject = {
-            "message": selectedMessage
+            "gate": selectedMessage
         };
 
         // Convert the JSON object to a string
@@ -55,15 +56,52 @@
         // Create an XMLHttpRequest object
         var xhr = new XMLHttpRequest();
 
+        console.log(jsonMessage);
+
         // Set up the HTTP POST request
-        xhr.open("POST", serverURL, true);
+        xhr.open("POST", serverURL + "/gate", true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         // Send the JSON message as the request body
         xhr.send(jsonMessage);
     }
 
-    function toggleEstopButton() {
-        
+    function toggleEstopButton(button, key) {
+        button.classList.toggle("pressed");
+
+        if (button.classList.contains("pressed")) {
+            // Stop sending messages
+            clearInterval(intervalId);
+
+            for (let i = 0; i < 1; i++) {
+                setTimeout(() => sendMessage(key, true), 1000 * i);
+            }
+        } else {
+            clearInterval(intervalId);
+            for (let i = 0; i < 1; i++) {
+                setTimeout(() => sendMessage(key, false), 1000 * i);
+            }
+        }
+    }
+
+    function sendMessage(key, value) {
+        var serverURL = "http://127.0.0.1:5001"; // Replace with the URL of your Flask app
+
+        // Create a JSON object with the message
+        var messageObject = {};
+        messageObject[key] = value;
+
+        // Convert the JSON object to a string
+        var jsonMessage = JSON.stringify(messageObject);
+
+        // Create an XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Set up the HTTP POST request
+        xhr.open("POST", serverURL + "/" + key, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Send the JSON message as the request body
+        xhr.send(jsonMessage);
     }
 </script>
