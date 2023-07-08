@@ -1,0 +1,12 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from bridge_interface/msg/Robot2Server.msg
+// generated code does not contain a copyright notice
+
+
+module bridge_interface {
+  module msg {
+    struct Robot2Server {
+      string gate;
+    };
+  };
+};
