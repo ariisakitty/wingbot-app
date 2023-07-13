@@ -3,6 +3,7 @@ import threading
 import msg
 from msg import r2s_msg, s2r_msg, robot_readiness, gate_readiness, wingwalking
 
+from bridge_interface.msg import Server2Robot, Robot2Server
 from bridge_node import run_bridge_node
 
 app = Flask(__name__)
@@ -26,44 +27,45 @@ def get_wingwalking_readiness():
 # Route to handle the "activate" message
 @app.route('/activate', methods=['POST'])
 def handle_activate_message():
-    global s2r_msg
+    global s2r
     data = request.get_json()
-    s2r_msg['activate'] = data['activate']
-
-    print(f"s2r_msg: {s2r_msg}")
+    s2r['activate'] = data['activate']
+    
+    print(f"s2r: {s2r}")
+    
 
     return 'Activate message received'
 
 # Route to handle the "engage" message
 @app.route('/engage', methods=['POST'])
 def handle_engage_message():
-    global s2r_msg
+    global s2r
     data = request.get_json()
-    s2r_msg['engage'] = data['engage']
+    s2r['engage'] = data['engage']
 
-    print(f"s2r_msg: {s2r_msg}")
+    print(f"s2r: {s2r}")
 
     return 'Engage message received'
 
 # Route to handle the "gate" message
 @app.route('/gate', methods=['POST'])
 def handle_gate_message():
-    global s2r_msg
+    global s2r
     data = request.get_json()
-    s2r_msg['gate'] = data['gate']
+    s2r['gate'] = data['gate']
     
-    print(f"s2r_msg: {s2r_msg}")
+    print(f"s2r: {s2r}")
     
     return 'Gate message received'
 
 # Route to handle the "engage" message
 @app.route('/estop', methods=['POST'])
 def handle_estop_message():
-    global s2r_msg
+    global s2r
     data = request.get_json()
-    s2r_msg['estop'] = data['estop']
+    s2r['estop'] = data['estop']
 
-    print(f"s2r_msg: {s2r_msg}")
+    print(f"s2r: {s2r}")
 
     return 'Estop message received'
 

@@ -15,6 +15,7 @@ class BridgeNode(Node):
         self.s2r = ""
 
     def publish_s2r(self, msg):
+        print(f"gate: {self.s2r_msg.gate} / activate: {self.s2r_msg.activate} / engage: {self.s2r_msg.engage} / estop: {self.s2r_msg.estop}")
         self.s2r_pub_.publish(msg)
     
     def r2s_callback(self, msg):

@@ -12,7 +12,7 @@ r2s_msg = {
     "is_engaged": False
 }
 
-s2r_msg = {
+s2r = {
     "gate": None,
     "activate": False,
     "engage": False,
