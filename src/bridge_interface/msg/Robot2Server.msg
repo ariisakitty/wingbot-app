@@ -1,1 +1,8 @@
+LatLng loc
 string gate
+bool estop
+LatLng[] fod
+LatLng[] left
+LatLng[] right
+bool is_activated
+bool is_engaged

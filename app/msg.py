@@ -1,17 +1,3 @@
-r2s_msg = {
-    "loc": {
-        "lat": None,
-        "lng": None
-    },
-    "gate": None,
-    "e-stop": False,
-    "fod": [],
-    "left": [],
-    "right": [],
-    "is_activated": False,
-    "is_engaged": False
-}
-
 s2r = {
     "gate": None,
     "activate": False,
@@ -40,6 +26,13 @@ wingwalking = {
     "right": None,
     "right_location": []
 }
+
+def r2s_app_callback(value):
+    gate_readiness["gate"] = value.gate
+
+    # Handle the updated r2s_value as needed
+    print("Updated value:", gate_readiness)
+
 
 def input_proc(input):
     # input is a object (r2s_msg)

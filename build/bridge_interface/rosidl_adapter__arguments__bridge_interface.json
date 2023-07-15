@@ -1,7 +1,0 @@
-{
-  "package_name": "bridge_interface",
-  "non_idl_tuples": [
-    "/home/ariisakitty/wingbot-app/src/bridge_interface:msg/Robot2Server.msg",
-    "/home/ariisakitty/wingbot-app/src/bridge_interface:msg/Server2Robot.msg"
-  ]
-}
