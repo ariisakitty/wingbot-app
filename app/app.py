@@ -51,7 +51,6 @@ def handle_gate_message():
     global s2r, bridge_node
     data = request.get_json()
     s2r['gate'] = data['gate']
-    print(f"s2r: {s2r}")
     bridge_node.set_s2r(s2r)
         
     return 'Gate message received'
@@ -69,14 +68,7 @@ def handle_estop_message():
 if __name__ == '__main__':
     bridge_node = run_bridge_node(r2s_app_callback)
     bridge_thread = threading.Thread(target=rclpy.spin, args=(bridge_node,))
-
-    # bridge_thread = threading.Thread(target=bridge_node.spin)
     bridge_thread.start()
     app.run(port=5001)
-
-    # bridge_thread = threading.Thread(target=run_bridge_node, args=(r2s_app_callback,))
-    # bridge_thread.start()
-    # app.run(port=5001)
-    # app.run(host='0.0.0.0', port=5000)
 
 

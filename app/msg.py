@@ -11,7 +11,7 @@ robot_readiness = {
         "lat": None,
         "lng": None
     },
-    "e_stop": False
+    "estop": False
 }
 gate_readiness = {
     "gate": None,
@@ -28,42 +28,13 @@ wingwalking = {
 }
 
 def r2s_app_callback(value):
-    gate_readiness["gate"] = value.gate
+    global robot_readiness, gate_readiness, wingwalking
 
-    # Handle the updated r2s_value as needed
-    print("Updated value:", gate_readiness)
-
-
-def input_proc(input):
-    # input is a object (r2s_msg)
-    # output is a object (r2s_msg_processed)
-
-    robot_readiness = {
-        "status": None,
-        "location": {
-            "lat": None,
-            "lng": None
-        },
-        "e_stop": False
-    }
-    gate_readiness = {
-        "gate": None,
-        "FOD": False,
-        "FOD_location": []
-    }
-    wingwalking = {
-        "is_activated": False,
-        "is_engaged": False,
-        "left": None,
-        "left_location": [],
-        "right": None,
-        "right_location": []
-    }
-
-    robot_readiness["e_stop"] = input["e-stop"]
-    if(robot_readiness["e_stop"]):
+    robot_readiness["estop"] = value.estop
+    if (robot_readiness["estop"]):
         robot_readiness["status"] = "Stopped"
-        robot_readiness["location"] = input["loc"] if input["loc"]["lat"] is not None else {"lat": None, "lng": None}
+        robot_readiness["location"]["lat"] = value.loc.lat if value.is_on else None
+        robot_readiness["location"]["lng"] = value.loc.lng if value.is_on else None
 
         gate_readiness["gate"] = None
         gate_readiness["FOD"] = False
@@ -77,18 +48,40 @@ def input_proc(input):
         wingwalking["right_location"] = []
 
     else:
-        robot_readiness["status"] = "Ready" if input["loc"]["lat"] is not None else "Unavailable"
-        robot_readiness["location"] = input["loc"] if robot_readiness["status"] == "Ready" else {"lat": None, "lng": None}
+        robot_readiness["status"] = "Ready" if value.is_on else "Unavailable"
+        robot_readiness["location"]["lat"] = value.loc.lat if value.is_on else None
+        robot_readiness["location"]["lng"] = value.loc.lng if value.is_on else None
 
-        gate_readiness["gate"] = input["gate"] if input["gate"] is not None else None
-        gate_readiness["FOD"] = False if input["fod"] == [] else True
-        gate_readiness["FOD_location"] = input["fod"] if gate_readiness["FOD"] else []
+        gate_readiness["gate"] = None if value.gate == "" else value.gate
+        gate_readiness["FOD"] = False if len(value.fod) == 0 else True
+        if gate_readiness["FOD"]:
+            gate_readiness["FOD_location"] = []
+            for i in range(len(value.fod)):
+                gate_readiness["FOD_location"].append({"lat": value.fod[i].lat, "lng": value.fod[i].lng})
+        else:
+            gate_readiness["FOD_location"] = []
 
-        wingwalking["is_activated"] = input["is_activated"]
-        wingwalking["is_engaged"] = input["is_engaged"]
-        wingwalking["left"] = False if input["left"] == [] else True
-        wingwalking["left_location"] = input["left"] if wingwalking["left"] else []
-        wingwalking["right"] = False if input["right"] == [] else True
-        wingwalking["right_location"] = input["right"] if wingwalking["right"] else []
+        wingwalking["is_activated"] = value.is_activated
+        wingwalking["is_engaged"] = value.is_engaged
+        wingwalking["left"] = False if len(value.left) == 0 else True
+        if wingwalking["left"]:
+            wingwalking["left_location"] = []
+            for i in range(len(value.left)):
+                wingwalking["left_location"].append({"lat": value.left[i].lat, "lng": value.left[i].lng})
+        else:
+            wingwalking["left_location"] = []
+        wingwalking["right"] = False if len(value.right) == 0 else True
+        if wingwalking["right"]:
+            wingwalking["right_location"] = []
+            for i in range(len(value.right)):
+                wingwalking["right_location"].append({"lat": value.right[i].lat, "lng": value.right[i].lng}) 
+        else:
+            wingwalking["right_location"] = []
 
-    return robot_readiness, gate_readiness, wingwalking
+
+    # Handle the updated r2s_value as needed
+    print(f"robot_readiness: {robot_readiness} / gate_readiness: {gate_readiness} / wingwalking: {wingwalking}")
+
+
+
+

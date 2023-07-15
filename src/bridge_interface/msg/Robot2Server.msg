@@ -1,3 +1,4 @@
+bool is_on
 LatLng loc
 string gate
 bool estop

@@ -1,0 +1,168 @@
+1. localization value
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.049613034718185
+  lng: -84.6545846632357
+gate: ''
+estop: false
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false" 
+
+2. localization update
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: ''
+estop: false
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false" 
+
+3. gate values
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false" 
+
+4. FOD values
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: [{lat: 39.04940036297776, lng: -84.65481567561633}, {lat: 39.04934570980135, lng: -84.65461373101869}]
+left: []
+right: []
+is_activated: false
+is_engaged: false" 
+
+5. 1x FOD removed
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: [{lat: 39.04940036297776, lng: -84.65481567561633}]
+left: []
+right: []
+is_activated: false
+is_engaged: false" 
+
+6. 2x FOD removed
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false" 
+
+7. Wingwalking mode on
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: []
+right: []
+is_activated: true
+is_engaged: false" 
+
+8. vehicles from both sides
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: [{lat: 39.049207553762564, lng: -84.65429743033211}, {lat: 39.04922610749031, lng: -84.6541003311147}]
+right: [{lat: 39.04922765363408, lng: -84.65506392728871}]
+is_activated: true
+is_engaged: false" 
+
+9. Right side removed
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: [{lat: 39.049207553762564, lng: -84.65429743033211}, {lat: 39.04922610749031, lng: -84.6541003311147}]
+right: []
+is_activated: true
+is_engaged: false" 
+
+10. Left side removed
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: []
+right: []
+is_activated: true
+is_engaged: false"
+
+11. Deactivated
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false"  
+
+12. Estop
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: true
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false"  
+
+13. Estop disengaged
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.04946452100041
+  lng: -84.6544867507035
+gate: 'A14'
+estop: false
+fod: []
+left: []
+right: []
+is_activated: false
+is_engaged: false"  

@@ -16,13 +16,13 @@ class BridgeNode(Node):
         self.r2s_update_callback = None
 
     def publish_s2r(self):
-        print(f"gate: {self.s2r.gate} / activate: {self.s2r.activate} / engage: {self.s2r.engage} / estop: {self.s2r.estop}")
+        print(f"@publish_s2r@ gate: {self.s2r.gate} / activate: {self.s2r.activate} / engage: {self.s2r.engage} / estop: {self.s2r.estop}")
         self.s2r_pub_.publish(self.s2r)
 
     def set_s2r(self, value):
-        print(f"value: {value}")
-        self.s2r.gate = value["gate"]
-        self.s2r.activate = value["activate"]
+        print(f"@set_s2r@ value: {value}")
+        self.s2r.gate = value["gate"] if value["gate"] is not None else ""
+        self.s2r.activate = value["activate"] 
         self.s2r.engage = value["engage"]
         self.s2r.estop = value["estop"]
 
