@@ -27,7 +27,7 @@
 
         if (button.classList.contains("pressed")) {
             if (key === 'activate') {
-                // button.innerText = "Activate";
+                button.innerText = "Deactivate";
                 // Stop sending messages
                 clearInterval(activateIntervalId);
                 // Send "deactivate" message for 3 times
@@ -35,7 +35,7 @@
                     setTimeout(() => sendMessage(key, true), i * 2000);
                 }
             } else if (key === 'engage') {
-                // button.innerText = "Engaged";
+                button.innerText = "Disengage";
                 // Stop sending messages
                 clearInterval(activateIntervalId);
                 // Send "deactivate" message for 3 times
@@ -45,7 +45,7 @@
             }
         } else {
             if (key === 'activate') {
-                // button.innerText = "Activate";
+                button.innerText = "Activate";
                 // Stop sending messages
                 clearInterval(activateIntervalId);
                 // Send "deactivate" message for 3 times
@@ -53,7 +53,7 @@
                     setTimeout(() => sendMessage(key, false), i * 2000);
                 }
             } else if (key === 'engage') {
-                // button.innerText = "Engage";
+                button.innerText = "Engage";
                 // Stop sending messages
                 clearInterval(engageIntervalId);
                 // Send "disengage" message for 3 times
