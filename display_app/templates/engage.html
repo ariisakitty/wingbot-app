@@ -4,10 +4,15 @@
         {% include 'header.html' %}
         <div class="main">
             <img src="{{ url_for('static', filename='logo_IAG.png') }}" alt="IAG Logo">
-            activate
+            <div class="engage_stop">
+                <img src="{{ url_for('static', filename='sign_stop.png') }}" alt="STOP">
+            </div>
+            <p class="engage_warning">AIRPLANE IN MOTION</p>
         </div>
         {% include 'footer.html' %}
     </div>
     {% include 'script.html' %}
 </body>
 </html>
+
+

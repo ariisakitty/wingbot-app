@@ -1,0 +1,33 @@
+<script>
+    var currentState = "";
+    var prevFetchedState = "";  // Store the previous fetched state
+
+    function updateState() {
+        console.log(currentState);
+        
+        // Fetch the current state using AJAX
+        fetch('/get_state')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.state);
+                currentState = data.state;
+                
+                // Fetch the previous state using AJAX
+                fetch('/get_prev_state')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.prev_state);
+                        prevFetchedState = data.prev_state;
+                        
+                        // Compare current state with previous fetched state
+                        if (currentState !== prevFetchedState) {
+                            var routeName = '/' + currentState;
+                            window.location.replace(routeName);
+                        }
+                    });
+            });
+    }
+    
+    // Update the state every second
+    setInterval(updateState, 1000);
+</script>

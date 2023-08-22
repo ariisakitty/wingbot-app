@@ -1,3 +1,15 @@
-<p>
-    default
-</p>
+{% include 'head.html' %}
+<body>
+    <div class="container">
+        {% include 'header.html' %}
+        <div class="main">
+            <img src="{{ url_for('static', filename='logo_IAG.png') }}" alt="IAG Logo">
+            
+            default
+        </div>
+        {% include 'footer.html' %}
+    </div>
+    {% include 'script.html' %}
+
+</body>
+</html>
