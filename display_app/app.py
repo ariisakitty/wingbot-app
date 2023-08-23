@@ -36,13 +36,17 @@ def robot_listener():
 
 @app.route('/get_state')
 def get_state():
-    print(f"state: {state}")
-    return jsonify({'state': state})
+    print(f"state: {state}, prev_state: {prev_state}")
+    return jsonify({'state': state, 'prev_state': prev_state})
 
-@app.route('/get_prev_state')
-def get_prev_state():
-    print(f"prev_state: {prev_state}")
-    return jsonify({'prev_state': prev_state})
+@app.route ('/update_state', methods=['POST'])
+def update_state():
+    prev_state = state
+
+# @app.route('/get_prev_state')
+# def get_prev_state():
+#     print(f"prev_state: {prev_state}")
+#     return jsonify({'prev_state': prev_state})
 
 @app.route('/')
 def index():
