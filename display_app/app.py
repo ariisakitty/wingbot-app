@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import threading
 import rclpy
 from rclpy.node import Node
@@ -14,9 +14,6 @@ prev_state = "default"
 # ROS2 callback function for updating state
 def r2s_callback(msg):
     global state
-    global prev_state
-
-    prev_state = state
 
     if msg.estop == True:
         state = "estop"
@@ -41,7 +38,12 @@ def get_state():
 
 @app.route ('/update_state', methods=['POST'])
 def update_state():
-    prev_state = state
+    global prev_state
+
+    data = request.get_json()  # Import 'request' from Flask
+    prev_state = data['state']  # Update the prev_state variable
+
+    return jsonify({'message': 'State updated successfully'})
 
 # @app.route('/get_prev_state')
 # def get_prev_state():

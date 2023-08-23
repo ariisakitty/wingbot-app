@@ -1,37 +1,27 @@
 <script>
     var currentState = "";
-    var prevFetchedState = "";  // Store the previous fetched state
 
     function updateState() {
-        console.log(currentState);
-        
         // Fetch the current state using AJAX
         fetch('/get_state')
             .then(response => response.json())
             .then(data => {
-                console.log(data.state);
                 currentState = data.state;
-                prevState = data.prev_state;
+                var routeName = '/' + currentState;
                 
-                if (currentState !== prevFetchedState) {
-                    var routeName = '/' + currentState;
+                if (currentState !== data.prev_state) {
                     window.location.replace(routeName);
                 }
-                // // Fetch the previous state using AJAX
-                // fetch('/get_prev_state')
-                //     .then(response => response.json())
-                //     .then(data => {
-                //         console.log(data.prev_state);
-                //         prevFetchedState = data.prev_state;
-                        
-                //         // Compare current state with previous fetched state
-                //         if (currentState !== prevFetchedState) {
-                //             var routeName = '/' + currentState;
-                //             window.location.replace(routeName);
-                //         }
-                //     });
+                
+                // Make a POST request to update_state
+                fetch('/update_state', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ state: currentState })
+                });
             });
-        
     }
     
     // Update the state every second
