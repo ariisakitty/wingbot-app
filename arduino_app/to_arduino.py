@@ -23,11 +23,15 @@ class ArduinoStateSubscriberNode(Node):
         
         self.timer_period = 1.0  # Timer period in seconds (1Hz)
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
-        self.data_to_send = 0
+        self.data_to_send = 1
         
     def arduino_state_callback(self, msg):
         self.data_to_send = msg.data
         self.get_logger().info(f'Received: {self.data_to_send}')
+
+    def timer_callback(self):
+        # This method will be called every second
+        self.publish_to_arduino()
         
     def publish_to_arduino(self):
         if self.ser is None or self.data_to_send is None:
@@ -35,6 +39,7 @@ class ArduinoStateSubscriberNode(Node):
         
         try:
             self.ser.write(bytes([self.data_to_send]))
+            self.get_logger().info(f'Sent to Arduino: {self.data_to_send}')
         except serial.SerialException as e:
             self.get_logger().error(f'Error writing to serial port: {e}')
         
