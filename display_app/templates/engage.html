@@ -1,18 +1,20 @@
 {% include 'head.html' %}
 <body>
-    <div class="container">
+    <div class="row1">
         {% include 'header.html' %}
+    </div>
+    <div class="row2">
         {% include 'logo.html' %}
-        <div>
-            <div class="engage_stop">
-                <img src="{{ url_for('static', filename='sign_stop.png') }}" alt="STOP">
-            </div>
-            <p class="engage_warning">AIRPLANE IN MOTION</p>    
+    </div>
+    <div class="row3">
+        <div class="engage_stop">
+            <img src="{{ url_for('static', filename='sign_stop.png') }}" alt="STOP">
         </div>
+        <p class="engage_warning">AIRPLANE IN MOTION</p> 
+    </div>
+    <div class="row4">
         {% include 'footer.html' %}
     </div>
     {% include 'script.html' %}
 </body>
 </html>
-
-

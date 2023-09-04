@@ -1,0 +1,14 @@
+.logo {
+    max-width: 100%;
+    /* background-color: beige; */
+
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.logo img {
+    max-width: 50%; /* Set maximum width for the image */
+    height: auto; /* Maintain aspect ratio */
+    margin: 20px 0; /* Add margin around the image */
+}

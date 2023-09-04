@@ -1,0 +1,63 @@
+/* style.css */
+html {
+    height: 100%;
+    background-color: white; /* Or any other color you prefer */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This centers the body in the middle of the screen */
+}
+
+body {
+    /* 46.875% size */
+    height: 900px;
+    width: 506px;
+    border: 1px solid black;
+    margin: auto;
+    /* overflow: hidden; */
+    padding: 0;
+    font-family: 'Roboto', sans-serif; /* Use Roboto font for the entire app */
+
+    display: flex; /* Turn body into a flex container */
+    flex-direction: column; /* Arrange children (rows) vertically */
+}
+
+/* Define the rows */
+.row1 {
+    flex: 1;
+    width: 100%;
+    /* border: 1px solid black; */
+    
+    display: flex;
+    align-items: center; /* vertical alignment */
+}
+
+.row2 {
+    flex: 2;
+    width: 100%;
+    /* border: 1px solid black; */
+
+    display: flex;
+    align-items: center; /* vertical alignment */
+}
+
+.row3 {
+    flex: 5;
+    width: 100%;
+    /* border: 1px solid black; */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.row4 {
+    flex: 2;
+    width: 100%;
+    /* border: 1px solid black; */
+
+    display: flex;
+    align-items: center; /* vertical alignment */
+    justify-content: center; /* horizontal alignment */
+}
+

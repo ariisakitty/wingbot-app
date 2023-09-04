@@ -1,5 +1,6 @@
 <script>
     var currentState = "";
+    var currentGate = "";
 
     function updateState() {
         // Fetch the current state using AJAX
@@ -7,9 +8,10 @@
             .then(response => response.json())
             .then(data => {
                 currentState = data.state;
+                currentGate = data.gate;
                 var routeName = '/' + currentState;
                 
-                if (currentState !== data.prev_state) {
+                if (currentState !== data.prev_state || currentGate !== data.prev_gate) {
                     window.location.replace(routeName);
                 }
                 
@@ -19,7 +21,10 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ state: currentState })
+                    body: JSON.stringify({
+                        state: currentState,
+                        gate: currentGate
+                    })
                 });
             });
     }

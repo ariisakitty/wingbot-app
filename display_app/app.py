@@ -5,15 +5,23 @@ from rclpy.node import Node
 from bridge_interface.msg import Robot2Server
 
 app = Flask(__name__)
-app.config['SERVER_NAME'] = '127.0.0.1:5001'  # Set the SERVER_NAME configuration
+app.config['SERVER_NAME'] = '127.0.0.1:5000'  # Set the SERVER_NAME configuration
 
 # Initialize state
 state = "default"
 prev_state = "default"
+gate = None
+prev_gate = None
 
 # ROS2 callback function for updating state
 def r2s_callback(msg):
     global state
+    global gate
+
+    if msg.gate == "":
+        gate = None
+    else:
+        gate = msg.gate
 
     if msg.estop == True:
         state = "estop"
@@ -23,7 +31,7 @@ def r2s_callback(msg):
         state = "activate"
     else:
         state = "default"
-    print(f"[display_app::r2s_callback] prev_state: {prev_state} / state: {state}")
+    print(f"[display_app::r2s_callback] prev_state: {prev_state} / state: {state} / prev_gate: {prev_gate} / gate: {gate}")
 
 def robot_listener():
     rclpy.init()
@@ -33,16 +41,17 @@ def robot_listener():
 
 @app.route('/get_state')
 def get_state():
-    print(f"state: {state}, prev_state: {prev_state}")
-    return jsonify({'state': state, 'prev_state': prev_state})
+    print(f"state: {state}, prev_state: {prev_state}, prev_gate: {prev_gate}, gate: {gate}")
+    return jsonify({'state': state, 'prev_state': prev_state, 'prev_gate': prev_gate, 'gate': gate})
 
 @app.route ('/update_state', methods=['POST'])
 def update_state():
     global prev_state
+    global prev_gate
 
     data = request.get_json()  # Import 'request' from Flask
     prev_state = data['state']  # Update the prev_state variable
-
+    prev_gate = data['gate']
     return jsonify({'message': 'State updated successfully'})
 
 # @app.route('/get_prev_state')
@@ -52,23 +61,23 @@ def update_state():
 
 @app.route('/')
 def index():
-    return render_template('default.html')
+    return render_template('default.html', gate=gate)
 
 @app.route('/default')
 def default():
-    return render_template('default.html')
+    return render_template('default.html', gate=gate)
 
 @app.route('/activate')
 def activate():
-    return render_template('activate.html')
+    return render_template('activate.html', gate=gate)
 
 @app.route('/engage')
 def engage():
-    return render_template('engage.html')
+    return render_template('engage.html', gate=gate)
 
 @app.route('/estop')
 def estop():
-    return render_template('estop.html')
+    return render_template('estop.html', gate=gate)
 
 if __name__ == '__main__':
     # Start the ROS2 listener in a separate thread
@@ -76,4 +85,4 @@ if __name__ == '__main__':
     ros2_thread.start()
     
     # Start the Flask app
-    app.run(port=5001)
+    app.run(port=5000)
