@@ -2,7 +2,7 @@
 
 #define LED_STRIP_PIN     7
 #define LED_FLASH_PIN     8
-#define NUM_LEDS    20
+#define NUM_LEDS    143
 
 CRGB leds[NUM_LEDS];
 
@@ -88,8 +88,9 @@ void control_LED_strip (byte r, byte g, byte b, byte mode) {
   if (mode == 0) {
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = CRGB (r, g, b);
+
     }
-    FastLED.show();
+    FastLED.show();    
   }
   else if (mode == 1) {
     // turn on LEDs
