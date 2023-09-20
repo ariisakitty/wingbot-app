@@ -2,6 +2,7 @@
 
 #define LED_STRIP_PIN     7
 #define LED_FLASH_PIN     8
+#define MITI_PIN          12
 #define NUM_LEDS    143
 
 CRGB leds[NUM_LEDS];
@@ -18,12 +19,16 @@ void setup() {
   FastLED.addLeds<WS2812, LED_STRIP_PIN, GRB>(leds, NUM_LEDS);  // Set up LED strip
 
   pinMode(LED_FLASH_PIN, OUTPUT);  // Set up LED flash
+  pinMode(MITI_PIN, OUTPUT);  // Set up MITI pin
 
   Serial.begin(9600);                           // Starts the serial communication at 9600 baud rate
   Serial.println("Arduino ready to receive!");  // Prints a ready message
 }
 
 void loop() {  
+  // Enable Miti
+  digitalWrite(MITI_PIN, HIGH);
+  
   continue_to_led = false;
   // If there's no serial data available, start the timer
   if (!Serial.available()) {   
@@ -47,29 +52,29 @@ void loop() {
     Serial.println(state);
     
     if (state == 0) {
-      // SOLID BLUE
-      control_LED_strip (0, 0, 255, 0); 
+      // SOLID GREEN
+      control_LED_strip (0, 255, 0, 0); 
 
       // FLASH OFF
       digitalWrite(LED_FLASH_PIN, LOW);
     }
     else if (state == 1) {
-      // BLINKING GREEN
-      control_LED_strip (0, 255, 0, 1);
+      // BLINKING BLUE
+      control_LED_strip (0, 0, 255, 1);
 
       // FLASH OFF
       digitalWrite(LED_FLASH_PIN, LOW);
     }
     else if (state == 2) {
-      // SOLID GREEN
-      control_LED_strip (0, 255, 0, 0);
+      // SOLID BLUE
+      control_LED_strip (0, 0, 255, 0);
 
       // FLASH OFF
       digitalWrite(LED_FLASH_PIN, LOW);
     }
     else if (state == 3) {
-      // SOLID GREEN
-      control_LED_strip (0, 255, 0, 0);
+      // SOLID BLUE
+      control_LED_strip (0, 0, 255, 0);
 
       // FLASH ON
       digitalWrite(LED_FLASH_PIN, HIGH);
@@ -82,6 +87,8 @@ void loop() {
       digitalWrite(LED_FLASH_PIN, HIGH);
     }     
   } 
+  
+
 }
 
 void control_LED_strip (byte r, byte g, byte b, byte mode) {
