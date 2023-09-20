@@ -1,4 +1,11 @@
-<div id="mapContainer" style="width: 100%; height: 100%;"></div>
+<div id="mapContainer" 
+    style="width: 95%; 
+        height: 95%; 
+        margin: 0; 
+        border-radius: 25px;
+        border: 1px solid black;
+        overflow: hidden;">
+</div>
 
 <script>
     var platform = new H.service.Platform({
@@ -9,10 +16,16 @@
 
     var map = new H.Map(
         document.getElementById('mapContainer'),
-        defaultLayers.vector.normal.map,
+        defaultLayers.raster.satellite.map,
         {
-            zoom: 10,
-            center: { lat: 52.5, lng: 13.4 }
-        }
+            zoom: 20,
+            center: { lat: 39.22216820767243, lng: -84.27086199235269 }
+        } 
     );
+
+    // Add behavior for map interactivity
+    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+    // Add UI controls for layer switching and other features
+    // H.ui.UI.createDefault(map, defaultLayers);
 </script>
