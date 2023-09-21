@@ -54,3 +54,19 @@
     font-weight: 900;
     color: white; 
 }
+
+.green-border {
+    border-color: green !important;
+}
+
+.red-border {
+    border-color: red !important;
+}
+
+.green-text {
+    color: green !important;
+}
+
+.red-text {
+    color: red !important;
+}

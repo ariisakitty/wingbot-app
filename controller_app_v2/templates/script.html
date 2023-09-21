@@ -1,0 +1,135 @@
+<script>
+    (function() {
+        const SERVER_URL = "http://127.0.0.1:5000";
+        const POLLING_INTERVAL = 1000;
+
+        const GATE_STATUS_ENDPOINT = '/get_gate_readiness';
+        const ROBOT_READINESS_ENDPOINT = '/get_robot_readiness';
+        const WINGWALKING_STATUS_ENDPOINT = '/get_wingwalking_status';
+
+        // DOM elements
+        const gateStatusElement = document.getElementById('gateStatusElement');
+        const leftBoxElement = document.querySelector('.column_row5:nth-child(1) .box_row5');
+        const rightBoxElement = document.querySelector('.column_row5:nth-child(2) .box_row5');
+        const leftStatusElement = document.querySelector('.column_row5:nth-child(1) .bottom_status');
+        const rightStatusElement = document.querySelector('.column_row5:nth-child(2) .bottom_status');
+
+        const BUTTON_TEXT_MAPPING = {
+            'estop': {
+                pressed: 'DISENGAGE EMERGENCY STOP',
+                notPressed: 'EMERGENCY STOP'
+            },
+            'activate': {
+                pressed: 'DEACTIVATE',
+                notPressed: 'ACTIVATE'
+            },
+            'engage': {
+                pressed: 'DISENGAGE',
+                notPressed: 'ENGAGE'
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkGateStatus();
+            setInterval(fetchGateReadiness, POLLING_INTERVAL);
+            setInterval(fetchWingwalkingStatus, POLLING_INTERVAL);
+
+            // Button event listeners
+            document.querySelectorAll('button[data-action]').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const action = event.currentTarget.getAttribute('data-action');
+                    
+                    switch(action) {
+                        case 'summon':
+                            sendSummonMessage();
+                            break;
+                        case 'estop':
+                        case 'activate':
+                        case 'engage':
+                            toggleButton(button, action);
+                            break;
+                        default:
+                            console.error('Unknown action:', action);
+                    }
+                });
+            });
+        });
+
+        function sendJSONToServer(endpoint, data) {
+            fetch(`${SERVER_URL}${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .catch(error => {
+                console.error(`Error sending data to ${endpoint}:`, error);
+            });
+        }
+
+        function sendSummonMessage() {
+            sendJSONToServer("/gate", { gate: "A1" });
+        }
+
+        function toggleButton(button, key) {
+            const isPressed = button.classList.toggle("pressed");
+            button.textContent = BUTTON_TEXT_MAPPING[key][isPressed ? 'pressed' : 'notPressed'];
+
+            sendJSONToServer(`/${key}`, { [key]: isPressed });
+        }
+
+        function checkGateStatus() {
+            if (gateStatusElement.textContent.trim() === 'None') {
+                gateStatusElement.textContent = '';
+            }
+        }
+
+        async function fetchGateReadiness() {
+            try {
+                const response = await fetch(GATE_STATUS_ENDPOINT);
+                const { gate } = await response.json();
+
+                gateStatusElement.textContent = gate || '';
+                checkGateStatus();
+
+            } catch (error) {
+                console.error('Error fetching gate readiness:', error);
+            }   
+        }
+
+        async function fetchWingwalkingStatus() {
+            try {
+                const response = await fetch(WINGWALKING_STATUS_ENDPOINT);
+                const { is_activated, left, right } = await response.json();
+
+                updateBoxStatus(leftBoxElement, leftStatusElement, is_activated, left);
+                updateBoxStatus(rightBoxElement, rightStatusElement, is_activated, right);
+                    
+            } catch (error) {
+                console.error('Error fetching wingwalking status:', error);
+            }
+        }
+
+        function updateBoxStatus(boxElement, statusElement, isActivated, side) {
+            boxElement.classList.remove('green-border', 'red-border');
+            statusElement.classList.remove('green-text', 'red-text');
+
+            if (isActivated) {
+                if (side) {
+                    boxElement.classList.add('red-border');
+                    statusElement.textContent = 'WARNING';
+                    statusElement.classList.add('red-text');
+                } else {
+                    boxElement.classList.add('green-border');
+                    statusElement.textContent = 'CLEARED';
+                    statusElement.classList.add('green-text');
+                }
+            } else {
+                statusElement.textContent = 'INACTIVE';
+            }
+        }
+
+    })();
+
+</script>

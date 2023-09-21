@@ -1,12 +1,12 @@
 <div class="column_row3">
     <div class="robot_status_window">
-        <p class="gate_status">
-            A1
+        <p class="gate_status" id="gateStatusElement">
+            {{ gate_readiness['gate'] }}
         </p>
     </div>
 </div>
 <div class="column_row3">
-    <button class="emergency_stop_button">
+    <button class="emergency_stop_button" data-action="estop">
         EMERGENCY STOP
     </button>
 </div>

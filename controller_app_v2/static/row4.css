@@ -12,13 +12,13 @@
 
 .button_row4 {
     height: 49px;
-    width: 103px;
+    width: 111px;
     cursor: pointer;
     border: 1px solid #979797;
     border-radius: 7px;
     /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
     background-color: #3A3939;
-    /* box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.25); */
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.25);
     transition: background-color 0.2s ease,
                 color 0.2s ease;
     
@@ -30,12 +30,29 @@
 }
 
 .button_row4:hover {
-    background-color: coral;
-    color: white;
-    font-weight: bold;
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 .button_row4:active {
     opacity: 1.0;
 }
+
+.button_row4.pressed {
+    background-color: white; /* darker shade for the pressed state */
+    color: #3A3939;            /* slightly dimmed text color for the pressed state */
+}
+
+#summon_button:hover{
+    background-color: white; /* darker shade for the pressed state */
+    color: #3A3939;            /* slightly dimmed text color for the pressed state */
+    opacity: 0.8;
+    /* transition: font-size 0.05s ease; */
+}
+
+#summon_button:active {
+    background-color: white; /* darker shade for the pressed state */
+    color: #3A3939;            /* slightly dimmed text color for the pressed state */
+    opacity: 1.0;
+    font-size: 1.2em;
+}
+
