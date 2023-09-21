@@ -32,7 +32,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             checkGateStatus();
             setInterval(fetchGateReadiness, POLLING_INTERVAL);
-            setInterval(fetchWingwalkingStatus, POLLING_INTERVAL);
+            // setInterval(fetchWingwalkingStatus, POLLING_INTERVAL);
+            setInterval(updateWingwalkingInfo, POLLING_INTERVAL);
+            setInterval(updateRobotInfo, POLLING_INTERVAL);
 
             // Button event listeners
             document.querySelectorAll('button[data-action]').forEach(button => {
@@ -85,6 +87,27 @@
             }
         }
 
+        async function updateRobotInfo() {
+            const robot = await fetchRobotReadiness();
+            if (robot) {
+                updateRobotDataOnMap(robot);
+            }
+        }
+        
+        async function fetchRobotReadiness() {
+            try {
+                const response = await fetch(ROBOT_READINESS_ENDPOINT);
+                const data = await response.json();
+                
+                if (data) {
+                    return data;
+                }
+            } catch (error) {
+                console.error('Error fetching robot readiness:', error);
+            }
+            return null;
+        }
+
         async function fetchGateReadiness() {
             try {
                 const response = await fetch(GATE_STATUS_ENDPOINT);
@@ -98,17 +121,27 @@
             }   
         }
 
+        async function updateWingwalkingInfo() {
+            const wingwalking = await fetchWingwalkingStatus();
+            if (wingwalking) {
+                updateWingwalkingDataOnMap(wingwalking);
+            }
+        }
+
         async function fetchWingwalkingStatus() {
             try {
                 const response = await fetch(WINGWALKING_STATUS_ENDPOINT);
-                const { is_activated, left, right } = await response.json();
+                const data = await response.json();
 
-                updateBoxStatus(leftBoxElement, leftStatusElement, is_activated, left);
-                updateBoxStatus(rightBoxElement, rightStatusElement, is_activated, right);
-                    
+                updateBoxStatus(leftBoxElement, leftStatusElement, data.is_activated, data.left);
+                updateBoxStatus(rightBoxElement, rightStatusElement, data.is_activated, data.right);
+
+                return data; // Return the data for further processing
+                
             } catch (error) {
                 console.error('Error fetching wingwalking status:', error);
             }
+            return null;
         }
 
         function updateBoxStatus(boxElement, statusElement, isActivated, side) {

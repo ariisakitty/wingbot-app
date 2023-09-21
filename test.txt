@@ -166,3 +166,18 @@ left: []
 right: []
 is_activated: false
 is_engaged: false"  
+
+
+
+## PR testing
+ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.222542149949874
+  lng: -84.27084904232197
+gate: 'A14'
+estop: false
+fod: []
+left: [{lat: 39.22243023610258, lng: -84.27092322824132}, {lat: 39.222496778435904, lng: -84.2706967726413}]
+right: []
+is_activated: true
+is_engaged: false" 

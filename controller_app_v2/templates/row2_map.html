@@ -8,6 +8,49 @@
 </div>
 
 <script>
+    var marker;  // Global marker variable
+    var leftWingwalkingMarkers = [];  // Store all left wingwalking markers
+    var rightWingwalkingMarkers = []; // Store all right wingwalking markers
+
+    // Function to handle updates on map based on robot readiness
+    function updateRobotDataOnMap(robot) {
+        if (robot.location) {
+            if (marker) {
+                marker.setGeometry(new H.geo.Point(robot.location.lat, robot.location.lng));
+            } else {
+                var icon = new H.map.Icon('/static/images/green_marker.png', iconOptions);
+                marker = new H.map.Marker({ lat: robot.location.lat, lng: robot.location.lng }, { icon: icon });
+                map.addObject(marker);
+            }
+        }
+    }
+
+    function updateWingwalkingDataOnMap(wingwalking) {
+        var icon = new H.map.Icon('/static/images/red_marker.png', iconOptions);
+
+        // Handle left wingwalking locations
+        // First, remove all existing left wingwalking markers
+        leftWingwalkingMarkers.forEach(marker => map.removeObject(marker));
+        leftWingwalkingMarkers = [];
+
+        wingwalking.left_location.forEach(loc => {
+            var newMarker = new H.map.Marker({ lat: loc.lat, lng: loc.lng }, { icon: icon });
+            leftWingwalkingMarkers.push(newMarker);
+            map.addObject(newMarker);
+        });
+
+        // Handle right wingwalking locations
+        // First, remove all existing right wingwalking markers
+        rightWingwalkingMarkers.forEach(marker => map.removeObject(marker));
+        rightWingwalkingMarkers = [];
+
+        wingwalking.right_location.forEach(loc => {
+            var newMarker = new H.map.Marker({ lat: loc.lat, lng: loc.lng }, { icon: icon });
+            rightWingwalkingMarkers.push(newMarker);
+            map.addObject(newMarker);
+        });
+    }
+
     var platform = new H.service.Platform({
         'apikey': 'UlbxlxiHLVFz1Cov4LTIZaNQUTxGHoY4R96qgGjxDFo'
     });
@@ -28,4 +71,10 @@
 
     // Add UI controls for layer switching and other features
     // H.ui.UI.createDefault(map, defaultLayers);
+
+    // Define the desired size for the icon
+    var iconOptions = {
+        size: new H.math.Size(30, 38)  // width and height in pixels
+    };
+
 </script>
