@@ -38,7 +38,8 @@ class ArduinoStateSubscriberNode(Node):
             return
         
         try:
-            self.ser.write(bytes([self.data_to_send]))
+            message = "<{}>".format(self.data_to_send).encode('utf-8')
+            self.ser.write(message)
             self.get_logger().info(f'Sent to Arduino: {self.data_to_send}')
         except serial.SerialException as e:
             self.get_logger().error(f'Error writing to serial port: {e}')
