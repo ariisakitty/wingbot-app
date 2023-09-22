@@ -13,7 +13,7 @@ class ArduinoStateSubscriberNode(Node):
             10
         )
         self.serial_port = '/dev/ttyACM0'
-        self.baud_rate = 9600
+        self.baud_rate = 19200
         try:
             self.ser = serial.Serial(self.serial_port, self.baud_rate)
             self.get_logger().info(f'Serial port {self.serial_port} opened')
@@ -41,6 +41,12 @@ class ArduinoStateSubscriberNode(Node):
             message = "<{}>".format(self.data_to_send).encode('utf-8')
             self.ser.write(message)
             self.get_logger().info(f'Sent to Arduino: {self.data_to_send}')
+            # ack = self.ser.readline().decode('utf-8').strip()
+            # self.get_logger().error(f'No ACK received. Got: {ack}')
+            num_bytes_waiting = self.ser.in_waiting
+            self.get_logger().info(f"There are {num_bytes_waiting} bytes in the input buffer.")
+
+
         except serial.SerialException as e:
             self.get_logger().error(f'Error writing to serial port: {e}')
         

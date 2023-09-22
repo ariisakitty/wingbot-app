@@ -26,7 +26,7 @@ void setup() {
   pinMode(LED_FLASH_PIN, OUTPUT);  // Set up LED flash
   pinMode(MITI_PIN, OUTPUT);  // Set up MITI pin
 
-  Serial.begin(9600);                           // Starts the serial communication at 9600 baud rate
+  Serial.begin(19200);                           // Starts the serial communication at 9600 baud rate
   Serial.println("Arduino ready to receive!");  // Prints a ready message
 }
 
@@ -35,6 +35,13 @@ void loop() {
   digitalWrite(MITI_PIN, HIGH);
   
   continue_to_led = false;
+
+  
+//  int serial = Serial.available();
+//  Serial.print("arduino: ");
+//  Serial.print(serial);
+//  Serial.println(" bytes");
+  
   // If there's no serial data available, start the timer
   if (!Serial.available()) {   
     if (startTime == 0) {  // If the timer hasn't started yet
@@ -46,6 +53,7 @@ void loop() {
     }
   } else {  // If there's serial data available
     char c = Serial.read();
+    startTime = millis();
 
     if (c == '<') {
         readString = "";  // Start of new message
@@ -58,24 +66,24 @@ void loop() {
         previousState = newState;  // Update only if it's a valid state
       } else {
         setErrorLEDs(true);  // Indicate error
-        Serial.print("Invalid state received: ");
-        Serial.println(newState);
+//        Serial.print("Invalid state received: ");
+//        Serial.println(newState);
       }
       
       state = previousState;  // Use the previous valid state (may be the same as newState if newState was valid)
 
-      Serial.print("Signal Received! state: ");
-      Serial.println(state);
+//      Serial.print("Signal Received! state: ");
+//      Serial.println(state);
       continue_to_led = true;
     } else {
       // Build the message
       readString += c;
     }  
   }
-
+  
   if (continue_to_led) {
-    Serial.print("LED part with state ");
-    Serial.println(state);
+//    Serial.print("LED part with state ");
+//    Serial.println(state);
     
     if (state == 0) {
       // powered up - BLINKING GREEN
