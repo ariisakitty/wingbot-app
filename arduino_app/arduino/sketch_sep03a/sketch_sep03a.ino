@@ -46,6 +46,7 @@ void loop() {
   if (!Serial.available()) {   
     if (startTime == 0) {  // If the timer hasn't started yet
       startTime = millis();  // Store the current time
+      continue_to_led = true;
     } else if (millis() - startTime >= waitTime) {  // If 1 second has passed without serial input
       state = 0;
       startTime = 0;  // Reset the timer
@@ -100,8 +101,8 @@ void loop() {
       digitalWrite(LED_FLASH_PIN, LOW);
     }
     else if (state == 2) {
-      // AD mode - SOLID BLUE
-      control_LED_strip (0, 0, 255, 0);
+      // AD mode - BLINKING BLUE
+      control_LED_strip (0, 0, 255, 1);
 
       // FLASH OFF
       digitalWrite(LED_FLASH_PIN, LOW);
@@ -136,14 +137,14 @@ void control_LED_strip(byte r, byte g, byte b, byte mode) {
         leds[i] = CRGB(r, g, b);
     }
     FastLED.show();
-    delay(450);
+    delay(600);
 
     // turn off LEDs
     for (int i = 0; i < ERROR_LED_START; i++) { // Only affect the first 141 LEDs
         leds[i] = CRGB(0, 0, 0);
     }
     FastLED.show();
-    delay(450);
+    delay(600);
   }
 }
 
