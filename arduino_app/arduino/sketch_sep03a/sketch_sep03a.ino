@@ -3,7 +3,7 @@
 #define LED_STRIP_PIN     7
 #define LED_FLASH_PIN     8
 #define MITI_PIN          12
-#define NUM_LEDS    143
+#define NUM_LEDS          143
 
 CRGB leds[NUM_LEDS];
 
@@ -52,21 +52,21 @@ void loop() {
     Serial.println(state);
     
     if (state == 0) {
-      // SOLID GREEN
-      control_LED_strip (0, 255, 0, 0); 
+      // powered up - BLINKING GREEN
+      control_LED_strip (0, 255, 0, 1); 
 
       // FLASH OFF
       digitalWrite(LED_FLASH_PIN, LOW);
     }
     else if (state == 1) {
-      // BLINKING BLUE
-      control_LED_strip (0, 0, 255, 1);
+      // XVN incoming - SOLID GREEN
+      control_LED_strip (0, 255, 0, 0);
 
       // FLASH OFF
       digitalWrite(LED_FLASH_PIN, LOW);
     }
     else if (state == 2) {
-      // SOLID BLUE
+      // AD mode - SOLID BLUE
       control_LED_strip (0, 0, 255, 0);
 
       // FLASH OFF
@@ -87,8 +87,6 @@ void loop() {
       digitalWrite(LED_FLASH_PIN, HIGH);
     }     
   } 
-  
-
 }
 
 void control_LED_strip (byte r, byte g, byte b, byte mode) {

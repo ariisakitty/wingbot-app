@@ -5,7 +5,7 @@ from rclpy.node import Node
 from bridge_interface.msg import Robot2Server
 
 app = Flask(__name__)
-app.config['SERVER_NAME'] = '127.0.0.1:5000'  # Set the SERVER_NAME configuration
+# app.config['SERVER_NAME'] = '127.0.0.1:5000'  # Set the SERVER_NAME configuration
 
 # Initialize state
 state = "default"
@@ -85,4 +85,4 @@ if __name__ == '__main__':
     ros2_thread.start()
     
     # Start the Flask app
-    app.run(port=5000)
+    app.run(port=5001)

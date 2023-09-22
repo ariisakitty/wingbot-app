@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 
+from std_msgs.msg import UInt8
 from sensor_msgs.msg import NavSatFix
 from bridge_interface.msg import Server2Robot, Robot2Server
 
@@ -11,6 +12,7 @@ class StateMachineNode(Node):
         # Initialize the messages
         self.robot2server_msg = Robot2Server()
         self.last_navsatfix_timestamp = self.get_clock().now()
+        self.arduino_state_msg = UInt8()
 
         # Subscription
         self.sub_fix = self.create_subscription(NavSatFix, 'fixposition/navsatfix', self.callback_navsat, 10)
@@ -18,6 +20,7 @@ class StateMachineNode(Node):
 
         # Publisher
         self.pub_robot = self.create_publisher(Robot2Server, 'robot2server', 10)
+        self.pub_arduino_state = self.create_publisher(UInt8, 'arduino_state', 10)
 
         # Timer
         self.timer = self.create_timer(1, self.timer_callback)  
@@ -48,11 +51,22 @@ class StateMachineNode(Node):
         # Check the time difference
         current_time = self.get_clock().now()
         time_diff = current_time - self.last_navsatfix_timestamp
-        if time_diff.nanoseconds >= 5*1e9:
+        if time_diff.nanoseconds >= 3*1e9:
             self.robot2server_msg.is_on = False
 
         # Logic for your state machine and eventual publishing on Robot2Server
         self.pub_robot.publish(self.robot2server_msg)
+
+        if self.robot2server_msg.is_engaged == True:
+            self.arduino_state_msg.data = 3
+        elif self.robot2server_msg.is_on == True:
+            self.arduino_state_msg.data = 2
+        else:
+            self.arduino_state_msg.data = 1
+        
+        self.pub_arduino_state.publish(self.arduino_state_msg)
+
+
 
 def main(args=None):
     rclpy.init(args=args)
