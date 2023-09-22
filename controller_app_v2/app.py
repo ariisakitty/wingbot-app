@@ -6,7 +6,7 @@ from bridge_node import run_bridge_node
 import rclpy
 
 app = Flask(__name__)
-app.config['SERVER_NAME'] = '127.0.0.1:5000'  # Set the SERVER_NAME configuration
+# app.config['SERVER_NAME'] = '0.0.0.0:5000'  # Set the SERVER_NAME configuration
 
 bridge_node = None
 
@@ -70,4 +70,4 @@ if __name__ == '__main__':
     bridge_node = run_bridge_node(r2s_app_callback)
     bridge_thread = threading.Thread(target=rclpy.spin, args=(bridge_node,))
     bridge_thread.start()
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=5000)
