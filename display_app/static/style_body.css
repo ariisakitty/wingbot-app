@@ -8,9 +8,9 @@ html {
 }
 
 body {
-    /* 46.875% size */
-    height: 900px;
-    width: 506px;
+    /* 46.875% size (900x506) / (1920x1080) */
+    height: 1920px;
+    width: 1080px;
     border: 1px solid black;
     margin: auto;
     /* overflow: hidden; */
