@@ -8,18 +8,28 @@
 </div>
 
 <script>
-    var marker;  // Global marker variable
+    var marker_left;  // Global marker variable
+    var marker_right;
     var leftWingwalkingMarkers = [];  // Store all left wingwalking markers
     var rightWingwalkingMarkers = []; // Store all right wingwalking markers
 
     // Function to handle updates on map based on robot readiness
     function updateRobotDataOnMap(robot) {
-        if (robot.location) {
-            if (marker) {
-                marker.setGeometry(new H.geo.Point(robot.location.lat, robot.location.lng));
+        if (robot_left.location) {
+            if (marker_left) {
+                marker_left.setGeometry(new H.geo.Point(robot.robot_left.location.lat, robot.robot_left.location.lng));
             } else {
                 var icon = new H.map.Icon('/static/images/green_marker.png', iconOptions);
-                marker = new H.map.Marker({ lat: robot.location.lat, lng: robot.location.lng }, { icon: icon });
+                marker = new H.map.Marker({ lat: robot.robot_left.location.lat, lng: robot.robot_left.location.lng }, { icon: icon });
+                map.addObject(marker);
+            }
+        }
+        if (robot_right.location) {
+            if (marker_right) {
+                marker_left.setGeometry(new H.geo.Point(robot.robot_right.location.lat, robot.robot_right.location.lng));
+            } else {
+                var icon = new H.map.Icon('/static/images/green_marker.png', iconOptions);
+                marker = new H.map.Marker({ lat: robot.robot_right.location.lat, lng: robot.robot_right.location.lng }, { icon: icon });
                 map.addObject(marker);
             }
         }

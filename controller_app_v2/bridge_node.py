@@ -8,9 +8,11 @@ class BridgeNode(Node):
         self.s2r_pub_ = self.create_publisher(Server2Robot, 'server2robot', 10)
         self.s2r_timer_ = self.create_timer(1, self.publish_s2r)
 
-        self.r2s_sub_ = self.create_subscription(Robot2Server, 'robot2server', self.r2s_callback, 10)
-
-        self.r2s = Robot2Server()
+        self.r2s_left_sub_ = self.create_subscription(Robot2Server, 'robot_left/robot2server', self.r2s_left_callback, 10)
+        self.r2s_right_sub2_ = self.create_subscription(Robot2Server, 'robot_right/robot2server', self.r2s_right_callback, 10)
+        
+        self.r2s_left = Robot2Server()
+        self.r2s_right = Robot2Server()
         self.s2r = Server2Robot()
 
         self.r2s_update_callback = None
@@ -26,12 +28,18 @@ class BridgeNode(Node):
         self.s2r.engage = value["engage"]
         self.s2r.estop = value["estop"]
 
-    def r2s_callback(self, msg):
-        self.r2s = msg # Update the r2s variable with received message
-        self.get_logger().info('Received: "%s"' % self.r2s) 
+    def r2s_left_callback(self, msg):
+        self.r2s_left = msg # Update the r2s variable with received message
+        self.get_logger().info('Received: "%s"' % self.r2s_left) 
         if self.r2s_update_callback is not None:
-            self.r2s_update_callback(self.r2s)
+            self.r2s_update_callback(self.r2s_left, self.r2s_right)
 
+    def r2s_right_callback(self, msg):
+        self.r2s_right = msg # Update the r2s variable with received message
+        self.get_logger().info('Received: "%s"' % self.r2s_right) 
+        if self.r2s_update_callback is not None:
+            self.r2s_update_callback(self.r2s_left, self.r2s_right)
+            
     def set_r2s_update_callback(self, callback):
         self.r2s_update_callback = callback
 
@@ -40,6 +48,3 @@ def run_bridge_node(callback):
     bridge_node = BridgeNode()
     bridge_node.set_r2s_update_callback(callback)
     return bridge_node
-    # rclpy.spin(bridge_node)
-    # bridge_node.destroy_node()
-    # rclpy.shutdown()

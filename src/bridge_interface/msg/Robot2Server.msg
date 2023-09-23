@@ -3,7 +3,6 @@ LatLng loc
 string gate
 bool estop
 LatLng[] fod
-LatLng[] left
-LatLng[] right
+LatLng[] ww_obj
 bool is_activated
 bool is_engaged

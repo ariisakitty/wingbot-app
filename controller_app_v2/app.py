@@ -6,7 +6,6 @@ from bridge_node import run_bridge_node
 import rclpy
 
 app = Flask(__name__)
-# app.config['SERVER_NAME'] = '0.0.0.0:5000'  # Set the SERVER_NAME configuration
 
 bridge_node = None
 

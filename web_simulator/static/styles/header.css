@@ -1,0 +1,16 @@
+.airtrek_robotics {
+    color: #FF7C02;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    margin: 0;
+}
+
+.web_simulator {
+    color: black;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    margin: 0;
+    margin-top: 15px;
+}
