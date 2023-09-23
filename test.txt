@@ -170,14 +170,26 @@ is_engaged: false"
 
 
 ## PR testing
-ros2 topic pub --once /robot2server bridge_interface/msg/Robot2Server "is_on: true 
+### robot left
+ros2 topic pub --once robot_left/robot2server bridge_interface/msg/Robot2Server "is_on: true 
 loc:
   lat: 39.222542149949874
   lng: -84.27084904232197
 gate: 'A14'
 estop: false
 fod: []
-left: [{lat: 39.22243023610258, lng: -84.27092322824132}, {lat: 39.222496778435904, lng: -84.2706967726413}]
-right: []
+ww_obj: [{lat: 39.22243023610258, lng: -84.27092322824132}, {lat: 39.222496778435904, lng: -84.2706967726413}]
+is_activated: true
+is_engaged: false" 
+
+### robot right
+ros2 topic pub --once robot_right/robot2server bridge_interface/msg/Robot2Server "is_on: true 
+loc:
+  lat: 39.222611013560204
+  lng: -84.27091394673322
+gate: 'A14'
+estop: false
+fod: []
+ww_obj: []
 is_activated: true
 is_engaged: false" 
