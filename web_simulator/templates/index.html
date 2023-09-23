@@ -5,14 +5,60 @@
         <p class="airtrek_robotics">Airtrek Robotics</p>
     </div>
     <div class="button_row">
-        <button>FEED FLIGHT SCHEDULE</button>
+        <button id="feedFlightSchedule">FEED FLIGHT SCHEDULE</button>
     </div>
     <div class="button_row">
-        <button>SPAWN VEHICLES ON VSR</button>
+        <button id="spawnVehiclesOnVSR">SPAWN VEHICLES ON VSR</button>
     </div>
     <div class="button_row">
-        <button>REMOVE VEHICLES ON VSR</button>
+        <button id="removeVehiclesOnVSR">REMOVE VEHICLES ON VSR</button>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#feedFlightSchedule').click(function() {
+            $.ajax({
+                url: '/feed', 
+                method: 'POST',
+                data: JSON.stringify({
+                    activate: true  // Send relevant data if needed
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error occurred:", textStatus, errorThrown);
+                }
+            });
+        });
+
+        $('#spawnVehiclesOnVSR').click(function() {
+            $.ajax({
+                url: '/spawn', 
+                method: 'POST',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error occurred:", textStatus, errorThrown);
+                }
+            });
+        });
+
+        $('#removeVehiclesOnVSR').click(function() {
+            $.ajax({
+                url: '/remove', 
+                method: 'POST',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error occurred:", textStatus, errorThrown);
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
