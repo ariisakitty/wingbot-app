@@ -19,7 +19,7 @@ class StateMachineNode(Node):
         self.sub_server = self.create_subscription(Server2Robot, 'server2robot', self.callback_server, 10)
 
         # Publisher
-        self.pub_robot = self.create_publisher(Robot2Server, 'robot2server', 10)
+        self.pub_robot = self.create_publisher(Robot2Server, 'robot_left/robot2server', 10)
         self.pub_arduino_state = self.create_publisher(UInt8, 'arduino_state', 10)
 
         # Timer
