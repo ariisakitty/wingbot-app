@@ -1,7 +1,7 @@
 .column_row5 {
     flex: 1;
     /* border: 1px solid white; */
-    height: 50%;
+    width: 100%;
     padding: 0;
     margin: 0;
 
@@ -10,63 +10,42 @@
     justify-content: center;
 }
 
-.box_row5 {
-    width: 147px;
-    height: 239px;
-    border: 3px solid #979797;
-    border-radius: 25px;
-
-    display: flex;
-    flex-direction: column;
-}
-
-.box_top {
-    width: 100%;
-    flex: 1.5;
-    /* border: 1px solid white; */
-
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-}
-
-.box_bottom {
-    width: 100%;
-    flex: 4;
-    /* border: 1px solid white; */
-
-    display: flex;
-    align-items: start; 
-    justify-content: center;
-    padding-top: 30px;
-}
-
-.top_left_right {
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
+.button_row5 {
+    /* og: 49x111  */
+    height: 34px;
+    width: 85%;
+    cursor: pointer;
+    border: 1px solid #363636;
+    border-radius: 50px;
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
+    background-color: #ffffff;
+    box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.25);
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+    
+    font-family: 'Inter';
+    font-style: normal;
     font-weight: 900;
-    color: white;   
+    /* og: 15px  */
+    font-size: 0.8em;
+    color: black;
 }
 
-.bottom_status {
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: white; 
+.button_row5:hover {
+    opacity: 0.8;
 }
 
-.green-border {
-    border-color: green !important;
+.button_row5:active {
+    opacity: 1.0;
 }
 
-.red-border {
-    border-color: red !important;
+.button_row5.pressed {
+    background-color: white; /* darker shade for the pressed state */
+    color: #3A3939;            /* slightly dimmed text color for the pressed state */
 }
 
-.green-text {
-    color: green !important;
+.button_row5[disabled] {
+    opacity: 0.3;  /* You can adjust this value */
+    cursor: not-allowed;
 }
 
-.red-text {
-    color: red !important;
-}

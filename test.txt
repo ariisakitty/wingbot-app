@@ -191,5 +191,6 @@ gate: 'A14'
 estop: false
 fod: []
 ww_obj: []
+is_at_ww_pos: true
 is_activated: true
 is_engaged: false" 

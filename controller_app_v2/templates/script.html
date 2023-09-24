@@ -11,10 +11,10 @@
 
         // DOM elements
         const gateStatusElement = document.getElementById('gateStatusElement');
-        const leftBoxElement = document.querySelector('.column_row5:nth-child(1) .box_row5');
-        const rightBoxElement = document.querySelector('.column_row5:nth-child(2) .box_row5');
-        const leftStatusElement = document.querySelector('.column_row5:nth-child(1) .bottom_status');
-        const rightStatusElement = document.querySelector('.column_row5:nth-child(2) .bottom_status');
+        const leftBoxElement = document.querySelector('.column_row4:nth-child(1) .box_row4');
+        const rightBoxElement = document.querySelector('.column_row4:nth-child(2) .box_row4');
+        const leftStatusElement = document.querySelector('.column_row4:nth-child(1) .bottom_status');
+        const rightStatusElement = document.querySelector('.column_row4:nth-child(2) .bottom_status');
 
         const BUTTON_TEXT_MAPPING = {
             'estop': {
@@ -31,6 +31,8 @@
             }
         };
 
+        const texts = ["START MONITORING", "STOP TRAFFIC", "END WINGWALKING"];
+
         document.addEventListener('DOMContentLoaded', () => {
             checkGateStatus();
             setInterval(fetchGateReadiness, POLLING_INTERVAL);
@@ -38,25 +40,51 @@
             setInterval(updateWingwalkingInfo, POLLING_INTERVAL);
             setInterval(updateRobotInfo, POLLING_INTERVAL);
 
-            // Button event listeners
-            document.querySelectorAll('button[data-action]').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const action = event.currentTarget.getAttribute('data-action');
+            let btn = document.querySelector(".button_row5");
+            btn.addEventListener("click", function() {
+                let currentText = btn.innerHTML;
+                let index = texts.indexOf(currentText);
+
+                if (index === -1 || index === 2) { // END WINGWALKING or unknown state
+                    btn.innerHTML = texts[0]; // START MONITORING
+
+                    // Send both "activate" and "engage" as false to backend
+                    sendJSONToServer("/activate", { activate: false });
+                    sendJSONToServer("/engage", { engage: false });
                     
-                    switch(action) {
-                        case 'summon':
-                            sendSummonMessage();
-                            break;
-                        case 'estop':
-                        case 'activate':
-                        case 'engage':
-                            toggleButton(button, action);
-                            break;
-                        default:
-                            console.error('Unknown action:', action);
-                    }
-                });
+
+                } else if (index === 0) { // START MONITORING
+                    btn.innerHTML = texts[1]; // STOP TRAFFIC
+
+                    // Send "activate" to backend
+                    sendJSONToServer("/activate", { activate: true });
+
+                } else if (index === 1) { // STOP TRAFFIC
+                    btn.innerHTML = texts[2]; // END WINGWALKING
+
+                    // Send "engage" to backend
+                    sendJSONToServer("/engage", { engage: true });
+                }
             });
+            // Button event listeners
+            // document.querySelectorAll('button[data-action]').forEach(button => {
+            //     button.addEventListener('click', (event) => {
+            //         const action = event.currentTarget.getAttribute('data-action');
+                    
+            //         switch(action) {
+            //             case 'summon':
+            //                 sendSummonMessage();
+            //                 break;
+            //             case 'estop':
+            //             case 'activate':
+            //             case 'engage':
+            //                 toggleButton(button, action);
+            //                 break;
+            //             default:
+            //                 console.error('Unknown action:', action);
+            //         }
+            //     });
+            // });
         });
 
         function sendJSONToServer(endpoint, data) {
@@ -72,16 +100,16 @@
             });
         }
 
-        function sendSummonMessage() {
-            sendJSONToServer("/gate", { gate: "A1" });
-        }
+        // function sendSummonMessage() {
+        //     sendJSONToServer("/gate", { gate: "A1" });
+        // }
 
-        function toggleButton(button, key) {
-            const isPressed = button.classList.toggle("pressed");
-            button.textContent = BUTTON_TEXT_MAPPING[key][isPressed ? 'pressed' : 'notPressed'];
+        // function toggleButton(button, key) {
+        //     const isPressed = button.classList.toggle("pressed");
+        //     button.textContent = BUTTON_TEXT_MAPPING[key][isPressed ? 'pressed' : 'notPressed'];
 
-            sendJSONToServer(`/${key}`, { [key]: isPressed });
-        }
+        //     sendJSONToServer(`/${key}`, { [key]: isPressed });
+        // }
 
         function checkGateStatus() {
             if (gateStatusElement.textContent.trim() === 'None') {
@@ -138,13 +166,24 @@
                 updateBoxStatus(leftBoxElement, leftStatusElement, data.is_activated, data.left);
                 updateBoxStatus(rightBoxElement, rightStatusElement, data.is_activated, data.right);
 
+                // Logic for enabling or disabling the button
+                let btn = document.querySelector(".button_row5");
+                console.log(data.is_at_ww_pos)
+                if (data.is_at_ww_pos) {
+                    btn.removeAttribute('disabled');
+                } else {
+                    btn.setAttribute('disabled', 'true');
+                }
+
                 return data; // Return the data for further processing
-                
+
             } catch (error) {
                 console.error('Error fetching wingwalking status:', error);
             }
             return null;
         }
+
+
 
         function updateBoxStatus(boxElement, statusElement, isActivated, side) {
             boxElement.classList.remove('green-border', 'red-border');

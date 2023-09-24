@@ -29,6 +29,7 @@ gate_readiness = {
     "FOD_location": []
 }
 wingwalking = {
+    "is_at_ww_pos": False,
     "is_activated": False,
     "is_engaged": False,
     "left": None,
@@ -55,6 +56,7 @@ def r2s_app_callback(robot_left, robot_right):
         gate_readiness["FOD"] = False
         gate_readiness["FOD_location"] = []
 
+        wingwalking["is_at_ww_pos"] = False
         wingwalking["is_activated"] = False
         wingwalking["is_engaged"] = False
         wingwalking["left"] = None
@@ -80,6 +82,7 @@ def r2s_app_callback(robot_left, robot_right):
         else:
             gate_readiness["FOD_location"] = []
 
+        wingwalking["is_at_ww_pos"] = robot_left.is_at_ww_pos
         wingwalking["is_activated"] = robot_left.is_activated
         wingwalking["is_engaged"] = robot_left.is_engaged
         wingwalking["left"] = False if len(robot_left.ww_obj) == 0 else True
