@@ -8,8 +8,8 @@ html {
 
 body {
     /* Og: 844x390 / 80%: 672x312 / 70%: 591x273 */
-    height: 591px;
-    width: 273px;
+    height: 844px;
+    width: 399px;
     margin: auto;
     background-color: #3A3939;
     /* overflow: hidden; */
@@ -24,7 +24,7 @@ body {
 
 /* Define the rows */
 .row0 {
-    flex: 0.3;
+    flex: 0.1;
     width: 100%;
     /* border: 1px solid white; */
     

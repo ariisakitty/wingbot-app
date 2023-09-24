@@ -12,8 +12,10 @@
 
 .robot_status_window {
     /* og: 147x147 */
-    width: 78%;
-    height: 80%;
+    width: 147px;
+    height: 135px;
+    /* width: 78%; */
+    /* height: 80%; */
     border: 3px solid #0066FF;
     border-radius: 25px;
     display: flex;
@@ -24,15 +26,18 @@
 .gate_status {
     font-family: 'Inter', sans-serif;
     /* og: 60px  */
-    font-size: 1.5em;
+    font-size: 60px;
+    /* font-size: 1.5em; */
     font-weight: 900;
     color: #0066FF;
 }
 
 .emergency_stop_button {
     /* og: 147x147 */
-    width: 72%;
-    height: 85%;
+    width: 147px;
+    height: 147px;
+    /* width: 72%; */
+    /* height: 85%; */
     cursor: pointer;
     border: solid;
     border-color: rgb(255, 0, 0);
@@ -45,7 +50,8 @@
     font-weight: 900;
 
     /* og: 17px */
-    font-size: 0.8em;
+    font-size: 17px;
+    /* font-size: 0.8em; */
     color: white;
     
     box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.25);

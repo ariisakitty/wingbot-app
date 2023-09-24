@@ -21,14 +21,14 @@
                 pressed: 'DISENGAGE EMERGENCY STOP',
                 notPressed: 'EMERGENCY STOP'
             },
-            'activate': {
-                pressed: 'DEACTIVATE',
-                notPressed: 'ACTIVATE'
-            },
-            'engage': {
-                pressed: 'DISENGAGE',
-                notPressed: 'ENGAGE'
-            }
+            // 'activate': {
+            //     pressed: 'DEACTIVATE',
+            //     notPressed: 'ACTIVATE'
+            // },
+            // 'engage': {
+            //     pressed: 'DISENGAGE',
+            //     notPressed: 'ENGAGE'
+            // }
         };
 
         const texts = ["START MONITORING", "STOP TRAFFIC", "END WINGWALKING"];
@@ -67,24 +67,24 @@
                 }
             });
             // Button event listeners
-            // document.querySelectorAll('button[data-action]').forEach(button => {
-            //     button.addEventListener('click', (event) => {
-            //         const action = event.currentTarget.getAttribute('data-action');
+            document.querySelectorAll('button[data-action]').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const action = event.currentTarget.getAttribute('data-action');
                     
-            //         switch(action) {
-            //             case 'summon':
-            //                 sendSummonMessage();
-            //                 break;
-            //             case 'estop':
-            //             case 'activate':
-            //             case 'engage':
-            //                 toggleButton(button, action);
-            //                 break;
-            //             default:
-            //                 console.error('Unknown action:', action);
-            //         }
-            //     });
-            // });
+                    switch(action) {
+                        case 'summon':
+                            // sendSummonMessage();
+                            break;
+                        case 'estop':
+                        // case 'activate':
+                        // case 'engage':
+                            toggleButton(button, action);
+                            break;
+                        default:
+                            console.error('Unknown action:', action);
+                    }
+                });
+            });
         });
 
         function sendJSONToServer(endpoint, data) {
@@ -104,12 +104,12 @@
         //     sendJSONToServer("/gate", { gate: "A1" });
         // }
 
-        // function toggleButton(button, key) {
-        //     const isPressed = button.classList.toggle("pressed");
-        //     button.textContent = BUTTON_TEXT_MAPPING[key][isPressed ? 'pressed' : 'notPressed'];
+        function toggleButton(button, key) {
+            const isPressed = button.classList.toggle("pressed");
+            button.textContent = BUTTON_TEXT_MAPPING[key][isPressed ? 'pressed' : 'notPressed'];
 
-        //     sendJSONToServer(`/${key}`, { [key]: isPressed });
-        // }
+            sendJSONToServer(`/${key}`, { [key]: isPressed });
+        }
 
         function checkGateStatus() {
             if (gateStatusElement.textContent.trim() === 'None') {
@@ -128,7 +128,6 @@
             try {
                 const response = await fetch(ROBOT_READINESS_ENDPOINT);
                 const data = await response.json();
-                
                 if (data) {
                     return data;
                 }
@@ -168,7 +167,6 @@
 
                 // Logic for enabling or disabling the button
                 let btn = document.querySelector(".button_row5");
-                console.log(data.is_at_ww_pos)
                 if (data.is_at_ww_pos) {
                     btn.removeAttribute('disabled');
                 } else {

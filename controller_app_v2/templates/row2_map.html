@@ -7,7 +7,7 @@
         overflow: hidden;">
 </div>
 
-<!-- <script>
+<script>
     var marker_left;  // Global marker variable
     var marker_right;
     var leftWingwalkingMarkers = [];  // Store all left wingwalking markers
@@ -16,19 +16,27 @@
     // Function to handle updates on map based on robot readiness
     function updateRobotDataOnMap(robot) {
         if (robot.robot_left.location) {
+            var left_icon_url = robot.robot_left.estop ? '/static/images/estop_marker.png' : '/static/images/green_marker.png';
+            var left_icon_option = robot.robot_left.estop ? icon_ego_estop : icon_ego_normal;
+
             if (marker_left) {
                 marker_left.setGeometry(new H.geo.Point(robot.robot_left.location.lat, robot.robot_left.location.lng));
+                marker_left.setIcon(new H.map.Icon(left_icon_url, left_icon_option));
             } else {
-                var icon = new H.map.Icon('/static/images/green_marker.png', iconOptions);
+                var icon = new H.map.Icon(left_icon_url, left_icon_option);
                 marker_left = new H.map.Marker({ lat: robot.robot_left.location.lat, lng: robot.robot_left.location.lng }, { icon: icon });
                 map.addObject(marker_left);
             }
         }
         if (robot.robot_right.location) {
+            var right_icon_url = robot.robot_right.estop ? '/static/images/estop_marker.png' : '/static/images/green_marker.png';
+            var right_icon_option = robot.robot_right.estop ? icon_ego_estop : icon_ego_normal;
+
             if (marker_right) {
                 marker_right.setGeometry(new H.geo.Point(robot.robot_right.location.lat, robot.robot_right.location.lng));
+                marker_right.setIcon(new H.map.Icon(right_icon_url, right_icon_option));
             } else {
-                var icon = new H.map.Icon('/static/images/green_marker.png', iconOptions);
+                var icon = new H.map.Icon(right_icon_url, right_icon_option);
                 marker_right = new H.map.Marker({ lat: robot.robot_right.location.lat, lng: robot.robot_right.location.lng }, { icon: icon });
                 map.addObject(marker_right);
             }
@@ -36,7 +44,7 @@
     }
 
     function updateWingwalkingDataOnMap(wingwalking) {
-        var icon = new H.map.Icon('/static/images/red_marker.png', iconOptions);
+        var icon = new H.map.Icon('/static/images/red_marker.png', icon_ww_obj);
 
         // Handle left wingwalking locations
         // First, remove all existing left wingwalking markers
@@ -71,8 +79,12 @@
         document.getElementById('mapContainer'),
         defaultLayers.raster.satellite.map,
         {
-            zoom: 20,
-            center: { lat: 39.22216820767243, lng: -84.27086199235269 }
+            // 1. Paxton Ramsey Park
+            // zoom: 20,
+            // center: { lat: 39.22216820767243, lng: -84.27086199235269 }
+            // 2. CVG B8
+            zoom: 18.5,
+            center: { lat: 39.05049285676494, lng: -84.65800578923196 }
         } 
     );
 
@@ -83,8 +95,14 @@
     // H.ui.UI.createDefault(map, defaultLayers);
 
     // Define the desired size for the icon
-    var iconOptions = {
+    var icon_ego_normal = {
         size: new H.math.Size(30, 38)  // width and height in pixels
     };
+    var icon_ego_estop = {
+        size: new H.math.Size(45, 45)  // width and height in pixels
+    };
+    var icon_ww_obj = {
+        size: new H.math.Size(38, 38)  // width and height in pixels
+    };
 
-</script> -->
+</script>

@@ -43,6 +43,8 @@ def r2s_app_callback(robot_left, robot_right):
 
     ## Need to separate robot_left and robot_right (9/23/23)   
     robot_readiness["robot_left"]["estop"] = robot_left.estop
+    robot_readiness["robot_right"]["estop"] = robot_right.estop
+
     if (robot_readiness["robot_left"]["estop"]):
         robot_readiness["robot_left"]["status"] = "Stopped"
         robot_readiness["robot_left"]["location"]["lat"] = robot_left.loc.lat if robot_left.is_on else None

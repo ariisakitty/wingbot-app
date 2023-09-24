@@ -12,7 +12,8 @@
 
 .button_row5 {
     /* og: 49x111  */
-    height: 34px;
+    /* height: 34px; */
+    height: 49px;
     width: 85%;
     cursor: pointer;
     border: 1px solid #363636;
@@ -27,7 +28,8 @@
     font-style: normal;
     font-weight: 900;
     /* og: 15px  */
-    font-size: 0.8em;
+    font-size: 15px;
+    /* font-size: 0.8em; */
     color: black;
 }
 

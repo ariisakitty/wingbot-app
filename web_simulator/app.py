@@ -1,5 +1,7 @@
 from flask import Flask, render_template, jsonify, request
-from ros2_handler import ros2_publisher
+from ros2_handler import ROS2Publisher, spin_ros2_node
+import threading
+import rclpy
 
 app = Flask(__name__)
 
@@ -23,8 +25,14 @@ def remove_vehicles_endpoint():
     return 'Removed vehicles on VSR'
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5002)
+    rclpy.init(args=None)
+    ros2_publisher = ROS2Publisher()
 
+    # Start spinning the ROS2 node in a new thread
+    threading.Thread(target=spin_ros2_node, args=[ros2_publisher], daemon=True).start()
+
+    # Run Flask server with multi-threading enabled
+    app.run(host='127.0.0.1', port=5002, threaded=True)
 
 # map center point (B8): 39.050953175675694, -84.65801653406541
 # left: (39.050841067691984, -84.65810003637769), (39.050925698245166, -84.65811843519225), (39.05100483321613, -84.65814674106082), (39.051127931883634, -84.65819061515711), (39.05118728295021, -84.65825713394823)
