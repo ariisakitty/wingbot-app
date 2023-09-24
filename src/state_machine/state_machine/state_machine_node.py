@@ -13,6 +13,12 @@ class StateMachineNode(Node):
         self.robot2server_msg = Robot2Server()
         self.last_navsatfix_timestamp = self.get_clock().now()
         self.arduino_state_msg = UInt8()
+        self.in_triangle_count = 0
+        self.triangle = [
+            (39.22256584953551, -84.2708385284572),
+            (39.2223581884994, -84.27097255577404),
+            (39.2223611893858, -84.2707246439741)
+        ]
 
         # Subscription
         self.sub_fix = self.create_subscription(NavSatFix, 'fixposition/navsatfix', self.callback_navsat, 10)
@@ -54,9 +60,18 @@ class StateMachineNode(Node):
         if time_diff.nanoseconds >= 3*1e9:
             self.robot2server_msg.is_on = False
 
-        # Logic for your state machine and eventual publishing on Robot2Server
+        print (f'in_triangle_count: {self.in_triangle_count}')
+        if is_point_inside_triangle(self.robot2server_msg.loc.lat, self.robot2server_msg.loc.lng, self.triangle):
+            self.in_triangle_count += 1
+            if self.in_triangle_count >= 5:
+                self.robot2server_msg.is_at_ww_pos = True
+        else:
+            self.in_triangle_count = 0
+            self.robot2server_msg.is_at_ww_pos = False
+
         self.pub_robot.publish(self.robot2server_msg)
 
+        # Arduino portion
         if self.robot2server_msg.is_engaged == True:
             self.arduino_state_msg.data = 3
         elif self.robot2server_msg.is_on == True:
@@ -66,7 +81,15 @@ class StateMachineNode(Node):
         
         self.pub_arduino_state.publish(self.arduino_state_msg)
 
+def is_point_inside_triangle(lat, lng, triangle):
+    def sign(p1, p2, p3):
+        return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
 
+    b1 = sign((lat, lng), triangle[0], triangle[1]) < 0.0
+    b2 = sign((lat, lng), triangle[1], triangle[2]) < 0.0
+    b3 = sign((lat, lng), triangle[2], triangle[0]) < 0.0
+
+    return ((b1 == b2) and (b2 == b3))
 
 def main(args=None):
     rclpy.init(args=args)
